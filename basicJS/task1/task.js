@@ -103,21 +103,26 @@ function Product() {
         this.reviews.comment = comment;
     }
 
-    this.getReviews = function() {
-        return this.reviews;
-    }
-
     this.setImage = function(image) {
-        this.image = image;
-    }
-
-    this.getImages = function() {
-        return this.images;
+        this.images.push(image);
     }
     
     //methods for all fields
-    this.getReviewByID = function(ID) {
-        return this.reviews;
+    this.getReviewByID = function(key) {
+        return this.reviews[key];
+    }
+
+    this.getImage = function(key) {  //not working
+        if (key != undefined) {
+            const imageOut = document.querySelector('.image-out');
+            let img = document.createElement('img');
+            img.src = "basicJS/task1/" + key + ".png";
+            imageOut.append(img);
+            return imageOut;
+        }
+        else {
+            return this.images;
+        }
     }
 
     this.addSize = function(size) {
@@ -130,15 +135,14 @@ function Product() {
     }
 
     this.addReview = function(valueService, valuePrice, value, valueQuality) {
-        this.reviews.rating.set("service", valueService);
-        this.reviews.rating.set("price", valuePrice);
-        this.reviews.rating.set("value", value);
-        this.reviews.rating.set("quality", valueQuality);
+        if(valueService != undefined) this.reviews.rating.set("service", valueService);
+        if(valuePrice != undefined) this.reviews.rating.set("price", valuePrice);
+        if(value != undefined) this.reviews.rating.set("value", value);
+        if(valueQuality != undefined) this.reviews.rating.set("quality", valueQuality);
     }
 
     this.deleteReview = function(key) {
-        let index = this.reviews.ID.indexOf(key);
-        this.reviews.splice(index, 1);
+        this.reviews.rating.delete(key);
     }
 
     this.getAverageRating = function() {
