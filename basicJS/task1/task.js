@@ -10,18 +10,7 @@ function Product() {
     this.quantity = 0,
     this.date = Date,
     this.images = [],
-    this.reviews = {
-            ID: "",
-            author: "",
-            date: Date,
-            comment: "",
-            rating: new Map([
-                ["service", 0],
-                ["price", 0],
-                ["value", 0],
-                ["quality", 0]
-            ])
-    }
+    this.reviews = []
 
     // create setters and getters for all fields
     this.setID = function(ID) {
@@ -96,20 +85,17 @@ function Product() {
         return this.date;
     }
 
-    this.setReviews = function(ID, author, date, comment) {
-        this.reviews.ID = ID;
-        this.reviews.author = author;
-        this.reviews.date = date;
-        this.reviews.comment = comment;
-    }
-
     this.setImage = function(image) {
         this.images.push(image);
     }
     
     //methods for all fields
     this.getReviewByID = function(key) {
-        return this.reviews[key];
+        for (let index = 0; index < this.reviews.length; i++) {
+            if (this.reviews[index].ID == key) {
+                return this.reviews[index];
+            }
+        }
     }
 
     this.getImage = function(key) {  //not working
@@ -134,21 +120,70 @@ function Product() {
         this.sizes.splice(index, 1);
     }
 
-    this.addReview = function(valueService, valuePrice, value, valueQuality) {
-        if(valueService != undefined) this.reviews.rating.set("service", valueService);
-        if(valuePrice != undefined) this.reviews.rating.set("price", valuePrice);
-        if(value != undefined) this.reviews.rating.set("value", value);
-        if(valueQuality != undefined) this.reviews.rating.set("quality", valueQuality);
+    this.addReview = function(review) {
+        this.reviews.push(review);
     }
 
     this.deleteReview = function(key) {
-        this.reviews.rating.delete(key);
+        for (let index = 0; index < this.reviews.length; index++) {
+            if (this.reviews[index].ID == key) {
+                delete this.reviews[index];
+                break;
+            }
+        }
     }
 
     this.getAverageRating = function() {
-        return (this.reviews.rating.get("service") +
-         this.reviews.rating.get("price") +
-          this.reviews.rating.get("value") +
-           this.reviews.rating.get("quality")) / this.reviews.rating.size;
+        let sumRating = 0;
+        for (let index = 0; index < this.reviews.length; index++) {
+            sumRating += this.reviews[index].rating.get("service");
+            sumRating += this.reviews[index].rating.get("price");
+            sumRating += this.reviews[index].rating.get("value");
+            sumRating += this.reviews[index].rating.get("quality");
+        }
+        return sumRating / this.reviews.length;
     }
-};
+}
+
+let shirt = new Product();
+let trainers = new Product();
+let review = {
+    ID: "213alex",
+    author: "alex",
+    date: 2023-8-12,
+    comment: "cool",
+    rating: new Map([
+        ["service", 5],
+        ["price", 1],
+        ["value", 3],
+        ["quality", 2]
+    ])
+}
+
+let review1 = {
+    ID: "123sam",
+    author: "sam",
+    date: 2022-1-13,
+    comment: "beautiful",
+    rating: new Map([
+        ["service", 1],
+        ["price", 2],
+        ["value", 3],
+        ["quality", 2]
+    ])
+}
+
+searchProducts = function(products, search) {
+
+}
+
+sortProducts = function (products, sortRule) {
+    if (sortRule == "price") {
+        for (let index = 0; index < products.length; index++) {
+            if (index + 1 < products.length && products[index].getPrice() > products[index + 1].getPrice()) {
+                [products[index], products[index + 1]] = [products[index + 1], products[index]];
+            }
+        }
+    }
+    return products;
+}
