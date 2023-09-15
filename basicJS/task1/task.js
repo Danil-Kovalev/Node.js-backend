@@ -1,3 +1,5 @@
+const { request } = require('http');
+
 function Product() {
     
     this.ID = "",
@@ -53,10 +55,6 @@ function Product() {
         return this.brand;
     }
 
-    this.setSizes = function (sizes) {
-        this.sizes = sizes;
-    }
-
     this.getSizes = function () {
         return this.sizes;
     }
@@ -98,16 +96,12 @@ function Product() {
         }
     }
 
-    this.getImage = function (key) {  //not working
-        if (key != undefined) {
-            const imageOut = document.querySelector('.image-out');
-            let img = document.createElement('img');
-            img.src = "basicJS/task1/" + key + ".png";
-            imageOut.append(img);
-            return imageOut;
+    this.getImage = function (key) {
+        if (key == undefined) {
+            return this.images[0];
         }
         else {
-            return this.images;
+            return this.images[this.images.indexOf(key)];
         }
     }
 
@@ -170,3 +164,68 @@ sortProducts = function (products, sortRule = "") {
         return products.sort((firstElement, secondElement) => firstElement.ID > secondElement.ID ? 1 : -1)
     }
 }
+
+let shirt = new Product();
+let trainers = new Product();
+let trousers = new Product();
+let review = {
+    ID: "213alex",
+    author: "alex",
+    date: 2023 - 8 - 12,
+    comment: "cool",
+    rating: new Map([
+        ["service", 5],
+        ["price", 1],
+        ["value", 3],
+        ["quality", 2]
+    ])
+}
+
+let review1 = {
+    ID: "123sam",
+    author: "sam",
+    date: 2022-1-13,
+    comment: "beautiful",
+    rating: new Map([
+        ["service", 1],
+        ["price", 2],
+        ["value", 3],
+        ["quality", 2]
+    ])
+}
+
+trousers.setID("trousers1");
+trousers.setName("trousers");
+trousers.setDescription("Black trousers");
+trousers.setPrice(19.5);
+trousers.setBrand("Armani");
+trousers.setSizes("XXL", "XXXL", "L");
+trousers.setActiveSize("XXXL");
+trousers.setQuantity(5);
+trousers.addReview(review1);
+trousers.addReview(review);
+
+trainers.setID("trainers1");
+trainers.setName("Trainers");
+trainers.setDescription("Black trainers");
+trainers.setPrice(11.5);
+trainers.setBrand("Armani");
+trainers.setSizes("XXL", "M", "L");
+trainers.setActiveSize("L");
+trainers.setQuantity(2);
+trainers.addReview(review1);
+trainers.addReview(review);
+
+shirt.setID("shirt1");
+shirt.setName("T-Shirt");
+shirt.setDescription("White t-shirt");
+shirt.setPrice(15.2);
+shirt.setBrand("Gucci");
+shirt.addSize("XL");
+shirt.addSize("S");
+shirt.setActiveSize("S");
+shirt.setQuantity(6);
+shirt.setImage("first.png");
+shirt.setImage("second.png");
+shirt.addReview(review);
+shirt.addReview(review1);
