@@ -2,7 +2,6 @@
 
     validateEmail: function (str) {
             let regexp = /(^[^\.\-\+][a-zA-Z\d\.\-\+]{1,20})@([\w\d\.!\$\%\&\’\*\+\/\=\?\^\-]{1,15})\.(\w{1,5}$)/g;
-            console.log(regexp.exec(str));
             return regexp.test(str);
         },
 
@@ -12,12 +11,12 @@
             return regexp.test(str);
         }
         else {
-            return null;
+            return false;
         }
     },
 
     validatePassword: function(str) {
-        let regexp = /^[a-z\dA-Z_]{8,}$/g;
+        let regexp = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)([0-9a-zA-Z_?]){8,}/g;
         return regexp.test(str);
     }
 }
