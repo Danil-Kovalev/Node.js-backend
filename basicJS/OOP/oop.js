@@ -204,29 +204,3 @@ class Electronics extends AbstractProduct {
         this.getInformation();
     }
 };
-
-let review = {
-    ID: "213alex",
-    author: "alex",
-    date: 2023,
-    comment: "cool",
-    rating: new Map([
-        ["service", 5],
-        ["price", 1],
-        ["value", 3],
-        ["quality", 2]
-    ])
-}
-
-let review1 = {
-    ID: "123sam",
-    author: "sam",
-    date: 2022,
-    comment: "beautiful",
-    rating: new Map([
-        ["service", 1],
-        ["price", 2],
-        ["value", 3],
-        ["quality", 2]
-    ])
-}
