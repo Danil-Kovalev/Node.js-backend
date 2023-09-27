@@ -82,6 +82,54 @@ AbstractProduct.prototype.getImage = function(key) {
     }
 };
 
+AbstractProduct.prototype.setterGetterValue = function(name, value) {
+    if (value == undefined) {
+        switch(name) {
+            case "ID": return this.getID();
+            case "name": return this.getName();
+            case "description": return this.getDescription();
+            case "price": return this.getPrice();
+            case "brand": return this.getBrand();
+            case "quantity": return this.getQuantity();
+            case "date": return this.getDate();
+            case "images": return this.getAllImages();
+            case "reviews": return this.getReviews();
+            default:
+                return "Sorry, but name is incorrect";
+        };
+    }
+    else {
+        switch(name) {
+            case "ID":
+                this.setID(value);
+                break;
+            case "name":
+                this.setName(value);
+                break;
+            case "description":
+                this.setDescription(value);
+                break;
+            case "price":
+                this.setPrice(value);
+                break;
+            case "brand":
+                this.setBrand(value);
+                break;
+            case "quantity":
+                this.setQuantity(value);
+                break;
+            case "date":
+                this.setDate(value);
+                break;
+            case "images":
+                this.setImage(value);
+                break;
+            default:
+                return "Sorry, but name is incorrect";
+        };
+    }
+};
+
 //methods for all fields
 AbstractProduct.prototype.getReviewByID = function(key) {
     for (let index = 0; index < this.reviews.length; i++) {
@@ -132,13 +180,21 @@ AbstractProduct.prototype.getAllImages = function() {
 };
 
 AbstractProduct.prototype.getFullInformation = function() {
-        console.log("ID: " + this.getID() + "\nName: " + this.getName() + "\nDescription: " + this.getDescription() +
-        "\nPrice: " + this.getPrice() + "\nQuantity: " + this.getQuantity() + "\nDate: " + this.getDate() +
-        "\nBrand: " + this.getBrand() + "\nImage: " + this.getAllImages() + `\nReviews{${this.getReviews()}\n}`);
+    let fullInfo = [];
+    fullInfo.push(`ID: ${this.getID()}`);
+    fullInfo.push(`\nName: ${this.getName()}`);
+    fullInfo.push(`\nDescription: ${this.getDescription()}`);
+    fullInfo.push(`\nPrice: ${this.getPrice()}`);
+    fullInfo.push(`\nQuantity: ${this.getQuantity()}`);
+    fullInfo.push(`\nDate: ${this.getDate()}`);
+    fullInfo.push(`\nBrand: ${this.getBrand()}`);
+    fullInfo.push(`\nImages: ${this.getAllImages()}`);
+    fullInfo.push(`\nReviews:\n----${this.getReviews()}\n----`);
+    return fullInfo;
 };
 
-AbstractProduct.prototype.getPriceForQuantity = function() {
-
+AbstractProduct.prototype.getPriceForQuantity = function(num) {
+    return `Price for ${num} quantity: ${this.getPrice() * num}`;
 };
 
 function Clothes() {
@@ -149,28 +205,25 @@ function Clothes() {
 Clothes.prototype = Object.create(AbstractProduct.prototype);
 Clothes.prototype.constructor = Clothes;
 
-Object.assign(Clothes.prototype, {
-    setMaterial(material) {
-        this.material = material;
-    },
+Clothes.prototype.setMaterial = function(material) {
+    this.material = material;
+};
 
-    getMaterial() {
-        return this.material;
-    },
+Clothes.prototype.getMaterial = function() {
+    return this.material;
+};
 
-    setColor(color) {
-        this.color = color;
-    },
+Clothes.prototype.setColor = function(color) {
+    this.color = color;
+};
 
-    getColor() {
-        return this.color;
-    },
+Clothes.prototype.getColor = function() {
+    return this.color;
+};
 
-    getInformation() {
-        this.getFullInformation();
-        console.log("Material: " + this.getMaterial() + "\nColor: " + this.getColor());
-    }
-})
+Clothes.prototype.getInformation = function() {
+    return `${this.getFullInformation()}\nMaterial: ${this.getMaterial()}\nColor: ${this.getColor()}`;
+};
 
 function Electronics() {
     AbstractProduct.call(this);
@@ -180,28 +233,25 @@ function Electronics() {
 Electronics.prototype = Object.create(AbstractProduct.prototype);
 Electronics.prototype.constructor = Electronics;
 
-Object.assign(Electronics.prototype, {
-    setWarranty(warranty) {
-        this.warranty = warranty;
-    },
+Electronics.prototype.setWarranty = function(warranty) {
+    this.warranty = warranty;
+};
 
-    getWarranty() {
-        return this.warranty;
-    },
+Electronics.prototype.getWarranty = function() {
+    return this.warranty;
+};
 
-    setPower(power) {
-        this.power = power;
-    },
+Electronics.prototype.setPower = function(power) {
+    this.power = power;
+};
 
-    getPower() {
-        return this.power;
-    },
+Electronics.prototype.getPower = function() {
+    return this.power;
+};
 
-    getInformation() {
-        this.getFullInformation();
-        console.log("Warranty: " + this.getWarranty() + "\nPower: " + this.getPower());
-    }
-})
+Electronics.prototype.getInformation = function() {
+    return `${this.getFullInformation()}\nWarranty: ${this.getWarranty()}\nPower: ${this.getPower()}`;
+};
     
 //Searches for all similar words or letters found in an array of objects
 searchProducts = function (products, search) {
@@ -215,7 +265,7 @@ searchProducts = function (products, search) {
         }
     }
     return result;
-}
+};
 
 //Sorting products by price, name, ID
 sortProducts = function (products, sortRule = "") {
@@ -228,4 +278,4 @@ sortProducts = function (products, sortRule = "") {
     else {
         return products.sort((firstElement, secondElement) => firstElement.ID > secondElement.ID ? 1 : -1)
     }
-}
+};
