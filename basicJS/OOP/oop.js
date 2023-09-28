@@ -153,13 +153,20 @@ AbstractProduct.prototype.deleteReview = function(key) {
 };
 
 AbstractProduct.prototype.getReviews = function() {
+    let getRating = (index) => {
+        let strRating = [];
+        for (let entry of this.reviews[index].rating) {
+            strRating.push(` {${entry}}`);
+        }
+        return strRating;
+    };
     let strReview = [];
     for (let i = 0; i < this.reviews.length; i++) {
         strReview.push(`\nID: ${this.reviews[i].ID}`);
         strReview.push(` Author: ${this.reviews[i].author}`);
         strReview.push(` Date: ${this.reviews[i].date}`);
         strReview.push(` Comment: ${this.reviews[i].comment}`);
-        strReview.push(` Rating: ${this.reviews[i].rating}`);
+        strReview.push(` Rating:${getRating(i)}`);
     }
     return strReview;
 };
@@ -167,10 +174,9 @@ AbstractProduct.prototype.getReviews = function() {
 AbstractProduct.prototype.getAverageRating = function() {
     let sumRating = 0;
     for (let index = 0; index < this.reviews.length; index++) {
-        sumRating += this.reviews[index].rating.get("service");
-        sumRating += this.reviews[index].rating.get("price");
-        sumRating += this.reviews[index].rating.get("value");
-        sumRating += this.reviews[index].rating.get("quality");
+        for (let value of this.reviews[index].rating.values()) {
+            sumRating += value;
+        };
     }
     return sumRating / (this.reviews.length * this.reviews[0].rating.size);
 };
