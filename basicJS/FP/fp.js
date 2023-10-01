@@ -10,15 +10,9 @@ getCSV = function(textCSV) {
         informationCity.push(arrayCity);
     });
     informationCity.sort((firstElement, secondElement) => firstElement.population < secondElement.population ? 1 : -1).slice(0, 9);
-    let ratingCities = informationCity.reduce((arrayRating, currentElement, indexElement) => {
-        arrayRating[arrayRating.name] = {population: arrayRating.population, rating: indexElement + 1};
-        arrayRating[currentElement.name] = {population: currentElement.population, rating: indexElement + 1};
-        return arrayRating;
-    });
-    delete ratingCities.x;
-    delete ratingCities.y;
-    delete ratingCities.name;
-    delete ratingCities.population;
+    let ratingCities = informationCity.reduce((previousElement, currentElement, indexElement) => {
+        return previousElement[currentElement.name] = {population: currentElement.population, rating: indexElement + 1}, previousElement;
+    },{});
     return getParsedCSV = function(text) {
         return text;
     };
