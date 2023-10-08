@@ -67,13 +67,13 @@ function checkData($body) {
     let fs = require("fs");
     if (fs.existsSync("C:\\courses\\HTTPandWeb\\formsAndHtmlOutput\\passwords.txt")) {
         let loginAndPassword = {
-            login: $body.match(/(?<=login=).+(?=\&)/g),
-            password: $body.match(/(?<=password\=).+/g)
+            login: $body.match(/(?<=login=).+(?=\&)/g).toString(),
+            password: $body.match(/(?<=password\=).+/g).toString()
         };
         let data = fs.readFileSync("C:\\courses\\HTTPandWeb\\formsAndHtmlOutput\\passwords.txt").toString();
         data.split("\n").map(element => {
-            if (element.includes(loginAndPassword.login) &&
-            element.includes(loginAndPassword.password)) checkLoginAndPassword = 1;
+            if (element.match(/^.+(?=\:)/g).toString() === loginAndPassword.login &&
+            element.match(/(?<=\:).+/g).toString() === loginAndPassword.password) checkLoginAndPassword = 1;
         });
     }
     else {
