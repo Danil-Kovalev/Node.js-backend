@@ -1,0 +1,9 @@
+#black-square, .hidden {
+    background-color: black;
+    width: 100px;
+    height: 100px;
+}
+
+button {
+    margin-top: 10px;
+}
