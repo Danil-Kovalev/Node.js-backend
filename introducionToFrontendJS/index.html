@@ -11,9 +11,24 @@
     <div id="black-square">
         <div class="hidden"></div>
     </div>
-    <button id="hide1" onclick="click1()">Hide CSS</button>
-    <button id="hide2" onclick="click2()">Hide JS</button>
-    <button id="hide3" onclick="click3()">Hide CSS + JS</button>
-    <button id="hide4" onclick="click4()">Hide and show</button>
+    <button onclick="hideCSS()">Hide CSS</button>
+    <button onclick="hideJS()">Hide JS</button>
+    <button onclick="hideCSSandJS()">Hide CSS + JS</button>
+    <button onclick="hideAndShow()">Hide and show</button><br>
+
+    <div class="same-squares"></div>
+    <div class="same-squares"></div>
+    <div class="same-squares"></div>
+    <div class="same-squares"></div>
+    <div class="same-squares"></div>
+    <button onclick="hideAndShowAll()">Hide and show all</button><br>
+
+    <br><input type="text" id="input-selector">
+    <button onclick="hideAndShowSelector()">Hide and show certain selector</button><br>
+
+    <br><div id="yellow-square" onclick="showOrHide()">Click me</div><br>
+
+    <div id="red-square"></div>
+    <button id="magic-button">Point at me</button>
 </body>
 </html>
