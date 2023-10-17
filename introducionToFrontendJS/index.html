@@ -29,6 +29,13 @@
     <br><div id="yellow-square" onclick="showOrHide()">Click me</div><br>
 
     <div id="red-square"></div>
-    <button id="magic-button">Point at me</button>
+    <button id="magic-button" onmouseover="mouseOverButton()" onmouseout="mouseOutButton()">Point at me</button>
+
+    <div id="green-rectangle"></div>
+    <input type="text" id="magic-input" onfocus="focusInput()" oninput="enterIntoInput()">
+
+    <br><img src="" alt="picture" id="loaded-picture"><br>
+    <input type="url" id="image-input">
+    <button id="get-image" onclick="getImage()">Get image</button>
 </body>
 </html>
