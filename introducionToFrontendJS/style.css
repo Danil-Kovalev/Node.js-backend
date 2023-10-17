@@ -15,10 +15,23 @@
 }
 
 #red-square {
-    display: none;
+    opacity: 0;
     background-color: red;
     width: 50px;
     height: 50px;
+}
+
+#green-rectangle {
+    opacity: 0;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    background-color: green;
+    width: 50px;
+    height: 20px;
+}
+
+#loaded-picture {
+    margin-top: 30px;
 }
 
 button {
