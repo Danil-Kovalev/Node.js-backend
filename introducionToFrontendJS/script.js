@@ -61,19 +61,29 @@ function hideSquare() {
     document.getElementById("yellow-square").style.display = "none";
 }
 
-//check mouseover or mouseout on button and depending on the resultat show or hide red square
-function mouseOverOrOut() {
-    document.getElementById("magic-button").addEventListener("mouseover", mouseOverButton);
-    document.getElementById("magic-button").addEventListener("mouseout", mouseOutButton);
-}
-
 //if mouse is over button, then show red square
 function mouseOverButton() {
-    document.getElementById("red-square").style.display = "";
+    document.getElementById("red-square").style.opacity = 1;
     document.getElementById("magic-button").innerHTML = "Take off me";
 }
 
 //if mouse is out button, then hide red square
 function mouseOutButton() {
-    document.getElementById("red-square").style.display = "none";
+    document.getElementById("red-square").style.opacity = 0;
+    document.getElementById("magic-button").innerHTML = "Point at me";
+}
+
+//shows green rectangle, when user focuses on input
+function focusInput() {
+    document.getElementById("green-rectangle").style.opacity = 1;
+}
+
+//hide green rectangle, when user enters into the input
+function enterIntoInput() {
+    document.getElementById("green-rectangle").style.opacity = 0;
+}
+
+function getImage() {
+    let element = document.getElementById("image-input").value;
+    document.querySelector("img#loaded-picture").src = element;
 }
