@@ -1,3 +1,10 @@
+addEventListener("mousemove", writePositionMouse);
+addEventListener("load", checkLanguage);
+addEventListener("load", checkGeolocation);
+addEventListener("load", saveLocalBlock);
+addEventListener("load", saveCookieBlock);
+addEventListener("load", saveSessionBlock);
+
 // hide black square with CSS
 function hideCSS() {
     document.getElementById("black-square").style.display = "none";
@@ -85,5 +92,64 @@ function enterIntoInput() {
 
 function getImage() {
     let element = document.getElementById("image-input").value;
-    document.querySelector("img#loaded-picture").src = element;
+    let newElement = document.createElement("img");
+    newElement.src = element;
+    newElement.style.marginTop = "20px";
+    document.body.insertBefore(newElement, document.getElementById("field-image"));
+}
+
+function getFewImages() {
+    let urlsImages = document.getElementById("few-images-input").value.split("\n");
+    urlsImages.map(element => {
+        let newElement = document.createElement("img");
+        newElement.src = element;
+        newElement.style.marginRight = "10px";
+        newElement.style.marginTop = "10px";
+        document.body.insertBefore(newElement, document.getElementById("field-images"));
+    })
+}
+
+function writePositionMouse(e) {
+    let x = e.clientX;
+    let y = e.clientY;
+    document.getElementById("coordination").innerHTML = `X: ${x}, Y: ${y}`;
+}
+
+function checkLanguage() {
+    let langugage = navigator.language;
+    document.getElementById("show-language").innerHTML = `Language: ${langugage}`;
+}
+
+function checkGeolocation() {
+    navigator.geolocation.getCurrentPosition(element => {
+        let info = document.getElementById("show-latitude-longtitude");
+        info.innerHTML = `Ш: ${element.coords.latitude}, Д: ${element.coords.longitude}`;
+    });
+}
+
+function setTextLocalBlock() {
+    let textLocalBlock = document.getElementById("local-block").innerHTML;
+    localStorage.setItem("localBlock", textLocalBlock);
+}
+
+function setTextCookieBlock() {
+    let textCookieBlock = document.getElementById("cookie-block").innerHTML;
+    document.cookie = `cookieBlock: ${textCookieBlock}`;
+}
+
+function setTextSessionBlock() {
+    let textSessionBlock = document.getElementById("session-block").innerHTML;
+    sessionStorage.setItem("sessionBlock", textSessionBlock);
+}
+
+function saveLocalBlock() {
+    document.getElementById("local-block").innerHTML = localStorage.getItem("localBlock");
+}
+
+function saveCookieBlock() {
+    document.getElementById("cookie-block").innerHTML = document.cookie.match(/?<=(cookieBlock: ).*(?=;)/g);
+}
+
+function saveSessionBlock() {
+    document.getElementById("session-block").innerHTML = sessionStorage.getItem("sessionBlock");
 }
