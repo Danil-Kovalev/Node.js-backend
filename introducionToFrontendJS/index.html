@@ -34,8 +34,20 @@
     <div id="green-rectangle"></div>
     <input type="text" id="magic-input" onfocus="focusInput()" oninput="enterIntoInput()">
 
-    <br><img src="" alt="picture" id="loaded-picture"><br>
+    <br><p id="field-image"></p>
     <input type="url" id="image-input">
     <button id="get-image" onclick="getImage()">Get image</button>
+    
+    <br><p id="field-images"></p>
+    <textarea name="" id="few-images-input" cols="30" rows="10"></textarea>
+    <button onclick="getFewImages()">Get few images</button>
+
+    <div id="coordination"></div>
+    <div id="show-language"></div>
+    <div id="show-latitude-longtitude"></div>
+
+    <br><div id="local-block" contenteditable="true" oninput="setTextLocalBlock()"></div>
+    <div id="cookie-block" contenteditable="true" oninput="setTextCookieBlock()"></div>
+    <div id="session-block" contenteditable="true" oninput="setTextSessionBlock()"></div>
 </body>
 </html>
