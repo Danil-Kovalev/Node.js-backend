@@ -1,10 +1,14 @@
-#black-square, .hidden, .same-squares {
+#black-square, .hidden {
     background-color: black;
     width: 100px;
     height: 100px;
 }
 
 .same-squares {
+    background-color: black;
+    width: 100px;
+    height: 100px;
+    display: inline-block;
     margin-top: 10px;
 }
 
@@ -30,8 +34,37 @@
     height: 20px;
 }
 
-#loaded-picture {
-    margin-top: 30px;
+#field-images {
+    margin-top: 20px;
+}
+
+#coordination {
+    position: absolute;
+    width: 102px;
+    top: 0;
+    left: 92%;
+    bottom: 90%;
+}
+
+#show-language {
+    position: absolute;
+    width: 100px;
+    top: 3%;
+    left: 92%;
+}
+
+#show-latitude-longtitude {
+    position: absolute;
+    width: 200px;
+    top: 6%;
+    left: 87%;
+}
+
+#local-block, #cookie-block, #session-block {
+    display: inline-block;
+    height: 100px;
+    width: 100px;
+    margin-top: 10px;
 }
 
 button {
