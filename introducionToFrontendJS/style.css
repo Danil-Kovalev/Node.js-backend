@@ -62,7 +62,7 @@
 
 #local-block, #cookie-block, #session-block {
     display: inline-block;
-    height: 100px;
+    height: 50px;
     width: 100px;
     margin-top: 10px;
 }
