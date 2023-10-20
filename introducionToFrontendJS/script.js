@@ -4,6 +4,7 @@ addEventListener("load", checkGeolocation);
 addEventListener("load", saveLocalBlock);
 addEventListener("load", saveCookieBlock);
 addEventListener("load", saveSessionBlock);
+window.addEventListener("scroll", addButtonBottom);
 
 // hide black square with CSS
 function hideCSS() {
@@ -134,7 +135,7 @@ function setTextLocalBlock() {
 
 function setTextCookieBlock() {
     let textCookieBlock = document.getElementById("cookie-block").innerHTML;
-    document.cookie = `cookieBlock: ${textCookieBlock}`;
+    document.cookie = `cookieBlock=${textCookieBlock}`;
 }
 
 function setTextSessionBlock() {
@@ -147,9 +148,21 @@ function saveLocalBlock() {
 }
 
 function saveCookieBlock() {
-    document.getElementById("cookie-block").innerHTML = document.cookie.match(/?<=(cookieBlock: ).*(?=;)/g);
+    let data = document.cookie.match(/(?<=(cookieBlock=)).*/g);
+    document.getElementById("cookie-block").innerHTML = decodeURIComponent(data);
 }
 
 function saveSessionBlock() {
     document.getElementById("session-block").innerHTML = sessionStorage.getItem("sessionBlock");
+}
+
+function addButtonBottom() {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        let newElement = document.createElement("button");
+        newElement.innerText = "Click me";
+        newElement.addEventListener("click", () => {
+            window.scroll(0, 0);
+        });
+        document.body.insertBefore(newElement, document.getElementById("field-button"));
+    }
 }
