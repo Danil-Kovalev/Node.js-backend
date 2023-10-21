@@ -67,6 +67,18 @@
     margin-top: 10px;
 }
 
+#big-block {
+    background-color: black;
+    height: 100px;
+    width: 100px;
+}
+
+#little-block {
+    background-color: blue;
+    height: 50px;
+    width: 50px;
+}
+
 button {
     margin-top: 10px;
 }
