@@ -58,5 +58,11 @@
 
     <p id="field-biggest-square"></p>
     <button id="show-gray-square" onclick="showGraySquare()">Click for show gray square</button>
+
+    <form><input type="submit" value="GO" onclick="return false;"></form>
+    <div id="field-input">
+        <p id="text-div">Choose file</p>
+        <input type="file" id="field-file" ondrop="dropFile(this)" ondragover="overFile()" ondragleave="leaveFile()">
+    </div>
 </body>
 </html>
