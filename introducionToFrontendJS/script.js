@@ -128,7 +128,7 @@ function checkLanguage() {
     document.getElementById("show-language").innerHTML = `Language: ${langugage}`;
 }
 
-//check geolocation user and write in page
+// check geolocation user and write in page
 function checkGeolocation() {
     navigator.geolocation.getCurrentPosition(element => {
         let info = document.getElementById("show-latitude-longtitude");
@@ -221,4 +221,22 @@ function showGraySquare() {
 //blocking scroll, when user sees gray square
 function blockScrollWindow() {
     window.scrollTo({top: document.body.offsetHeight});
+}
+
+function dropFile(file) {
+    let element = document.getElementById("field-input");
+    element.style.backgroundColor = "green";
+    element.style.boxShadow = "7px 5px 5px rgb(95, 238, 38)";
+}
+
+function overFile() {
+    let element = document.getElementById("field-input");
+    element.style.backgroundColor = "red";
+    element.style.boxShadow = "7px 5px 5px brown";
+}
+
+function leaveFile() {
+    let element = document.getElementById("field-input");
+    element.style.backgroundColor = "rgb(15, 237, 226)";
+    element.style.boxShadow = "7px 5px 5px gray";
 }
