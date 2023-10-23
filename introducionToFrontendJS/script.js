@@ -223,20 +223,30 @@ function blockScrollWindow() {
     window.scrollTo({top: document.body.offsetHeight});
 }
 
-function dropFile(file) {
+//change style div, when file dropped on input
+function dropFile() {
     let element = document.getElementById("field-input");
     element.style.backgroundColor = "green";
     element.style.boxShadow = "7px 5px 5px rgb(95, 238, 38)";
 }
 
+//change style div, when file over input
 function overFile() {
     let element = document.getElementById("field-input");
     element.style.backgroundColor = "red";
     element.style.boxShadow = "7px 5px 5px brown";
 }
 
+//change style div, when file removed from input
 function leaveFile() {
     let element = document.getElementById("field-input");
     element.style.backgroundColor = "rgb(15, 237, 226)";
     element.style.boxShadow = "7px 5px 5px gray";
+}
+
+//get file name and put it in paragraph, and change style after it
+function getFileName() {
+    let parseNameFile = document.getElementById("field-file").value;
+    document.getElementById("text-div").innerHTML = parseNameFile.match(/(?<=\\)[0-9a-zA-Z]+\.[a-zA-Z]+(?=$)/g);
+    dropFile();
 }
