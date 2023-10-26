@@ -27,22 +27,26 @@ function getAllProductNames(a: {products?: any}) {
 function Hey(a: {name: any, cuteness?: number, coolness?: number}) {
     return "hey! i'm " + a.name();
 }
-Hey({name: () => "roma", cuteness: 100})
+Hey({name: () => "roma", cuteness: 100});
 Hey({name: () => "vasya", coolness: 100})
 
 // 4.2
 
 interface Pet {
-    name: any;
+    name(): string;
 }
 
 class Cat implements Pet {
-    name: string;
+    petName: string;
     value: any;
 
     constructor(name: string, value: any) {
-        this.name = name;
+        this.petName = name;
         this.value = value;
+    }
+
+    name(): string {
+        return this.petName;
     };
 }
 
@@ -55,7 +59,7 @@ function Hey2(abstractPet: Pet) {
 }
 let a = new Cat("myavchik", true)
 let b = new Dog("gavchik", 333)
-Hey2(a)
+Hey2(a);
 Hey2(b)
 
 // 4.3
