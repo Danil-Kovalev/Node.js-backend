@@ -43,14 +43,58 @@ getNames2().then(console.log);
 
 //3.3
 
-function getName3() {
-    let names: Array<any> = [];
-    for (let i: number = 0; i < 3; i++) {
-        const promise = new Promise((resolve) => {
-            fetch("https://random-data-api.com/api/name/random_name").then(response => response.json()).then((data: any) => resolve(data.name));
-        })
-        names.push(promise.then(result => result));
+function getNames3() {
+    const numberRequest: number = 3;
+    let arrayNames: Array<any> = [];
+    let arrayStringNames: Array<string> = [];
+    let url = "https://random-data-api.com/api/name/random_name";
+    for (let i: number = 0; i < numberRequest; i++) {
+        arrayNames.push(fetch(url).then(response => response.json()).then((data: any) => data.name));
     }
-    return Promise.resolve(names);
+    let promise = new Promise((resolve, reject) => {
+        arrayNames.map((element: Promise<string>) => {
+            element.then((value: string) => {
+                arrayStringNames.push(value)
+                if (arrayStringNames.length == numberRequest) {
+                    resolve(arrayStringNames);
+                }
+            }).catch(err => reject(err));
+        })
+    })
+    promise.then(value => console.log("Names3: " + value))
 }
-getName3().then(result => console.log("Names3: " + result));
+
+getNames3();
+
+//4.1
+
+function getFemale2() {
+    const promise = fetch("https://random-data-api.com/api/users/random_user").then(response => response.json()).then((value: any) => value.gender);
+    return new Promise((resolve) => resolve(promise));
+}
+
+let checkFemale: boolean = false;
+for(let index: number = 1; index > 0; index++) {
+    getFemale2().then(value => {
+        value === "Female" ? checkFemale = true : false;
+    })
+    if (checkFemale) {
+        console.log(`Get female in ${index} times with async/await!`);
+        break;
+    }
+}
+
+//4.2
+
+async function getFemale() {
+    const response = await fetch("https://random-data-api.com/api/users/random_user");
+    const data: any = await response.json();
+    return data.gender;
+}
+
+for (let index: number = 1; index > 0; index++) {
+    if (await getFemale() === "Female") {
+        console.log(`Get female in ${index} times with async/await!`);
+        break;
+    }
+}
