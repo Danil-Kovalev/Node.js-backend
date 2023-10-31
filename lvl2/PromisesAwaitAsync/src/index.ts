@@ -68,32 +68,41 @@ getNames3();
 
 //4.1
 
-function getFemale2() {
-    const promise = fetch("https://random-data-api.com/api/users/random_user").then(response => response.json()).then((value: any) => value.gender);
-    return new Promise((resolve) => resolve(promise));
+let index:number = 1;
+
+function getGender() {
+    let url = "https://random-data-api.com/api/users/random_user";
+    return new Promise((resolve) => {
+        resolve(fetch(url).then(response => response.json()).then((data: any) => data.gender));
+    })
 }
 
-let checkFemale: boolean = false;
-for(let index: number = 1; index > 0; index++) {
-    getFemale2().then(value => {
-        value === "Female" ? checkFemale = true : false;
+function getFemale(promiseGender: Promise<any>) {
+    const promise = new Promise(() => {
+        promiseGender.then(value => {
+            if (value === "Female") {
+                console.log(`Get female in ${index} times without async/await!`);
+            }
+            else {
+                index++;
+                getFemale(getGender());
+            }
+        })
     })
-    if (checkFemale) {
-        console.log(`Get female in ${index} times with async/await!`);
-        break;
-    }
 }
+
+getFemale(getGender());
 
 //4.2
 
-async function getFemale() {
+async function getFemale2() {
     const response = await fetch("https://random-data-api.com/api/users/random_user");
     const data: any = await response.json();
     return data.gender;
 }
 
 for (let index: number = 1; index > 0; index++) {
-    if (await getFemale() === "Female") {
+    if (await getFemale2() === "Female") {
         console.log(`Get female in ${index} times with async/await!`);
         break;
     }
