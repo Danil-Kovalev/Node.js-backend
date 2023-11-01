@@ -107,3 +107,35 @@ for (let index: number = 1; index > 0; index++) {
         break;
     }
 }
+
+//5
+
+async function getIp() {
+    return await fetch("https://api.ipify.org?format=json").then(response => response.json()).then((data: any) => data.ip);
+}
+
+function showIp(ip: any) {
+    console.log("My ip: " + ip);
+}
+
+async function myIp(showFunction: Function) {
+    showFunction(await getIp());
+}
+
+myIp(showIp);
+
+//6
+
+async function getIp2() {
+    return await fetch("https://api.ipify.org?format=json").then(response => response.json()).then((data: any) => data.ip);
+}
+
+function showIp2(ip: any) {
+    console.log("Ip getted: " + ip);
+}
+
+async function myIp2(showFunction: Function) {
+    showFunction(await getIp2());
+}
+
+myIp2(showIp2);
