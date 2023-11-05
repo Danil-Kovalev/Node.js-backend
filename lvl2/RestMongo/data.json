@@ -1,0 +1,17 @@
+{ "items": [
+     {
+        "id": 1,
+        "text": "My first id",
+        "checked": true
+    },
+    {
+        "id": 2,
+        "text": "My second id",
+        "checked": true
+    },
+    {
+        "id": 3,
+        "text": "My third id",
+        "checked": true
+    }
+]}
