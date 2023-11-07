@@ -9,9 +9,9 @@ const app = express();
 const dirname = path.resolve();
 const port: number = 3005;
 const FileStoreSession = FileStore(session);
+const jsonParser = bodyParser.json();
 
 app.use(express.static(path.resolve(dirname, 'front')));
-app.use(bodyParser.json());
 app.use(
     session({
       store: new FileStoreSession({}),
@@ -29,14 +29,14 @@ app.route('/api/v1/items')
   .get((req: any, res: any) => {
     res.send(getData());
   })
-  .post((req: any, res: any) => {
-    res.send(addData(req));
+  .post(jsonParser, (req: any, res: any) => {
+    res.send(addData(req.body));
   })
-  .put((req: any, res: any) => {
-    res.send(updateData(JSON.parse(req)));
+  .put(jsonParser, (req: any, res: any) => {
+    res.send(updateData(req.body));
   })
-  .delete((req: any, res: any) => {
-    res.sende(deleteData(JSON.parse(req)));
+  .delete(jsonParser, (req: any, res: any) => {
+    res.send(deleteData(req.body));
   })
 
 app.listen(port, () => {
