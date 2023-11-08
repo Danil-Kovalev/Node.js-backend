@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
 import bodyParser from "body-parser";
 import session from 'express-session';
@@ -18,27 +18,40 @@ app.use(
       secret: 'keyboard cat',
       resave: true,
       saveUninitialized: true,
+      cookie: {maxAge: 1800000}
     })
-  );
+);
 
-app.get('/', (req: any, res: any) => {
+app.get('/', (req: Request, res: Response) => {
     res.sendFile(path.resolve(dirname, 'front', 'index.html'));
 });
 
 app.route('/api/v1/items')
-  .get((req: any, res: any) => {
+  .get((req: Request, res: Response) => {
     res.send(getData());
   })
-  .post(jsonParser, (req: any, res: any) => {
+  .post(jsonParser, (req: Request, res: Response) => {
     res.send(addData(req.body));
   })
-  .put(jsonParser, (req: any, res: any) => {
+  .put(jsonParser, (req: Request, res: Response) => {
     res.send(updateData(req.body));
   })
-  .delete(jsonParser, (req: any, res: any) => {
+  .delete(jsonParser, (req: Request, res: Response) => {
     res.send(deleteData(req.body));
   })
 
 app.listen(port, () => {
-    console.log(`Server starts on port ${port}`);
+    console.log(`Server V1 starts on port ${port}`);
 });
+
+app.post('/api/v1/login', jsonParser, (req: Request, res: Response) => {
+  
+})
+
+app.post('api/v1/logout', jsonParser, (req: Request, res: Response) => {
+  
+})
+
+app.post('api/v1/register', jsonParser, (req: Request, res: Response) => {
+  
+})
