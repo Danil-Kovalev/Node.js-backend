@@ -65,14 +65,6 @@ app.post('/api/v2/router', jsonParser, (req: Request, res: Response) => {
     }
   }
 });
-  
-  app.post('/api/v2/logout', (req: Request, res: Response) => {
-    req.session.destroy((err) => {
-      if (err) throw Error;
-      res.clearCookie('connect.sid');
-      res.send({"ok": true});
-    })
-  })
 
 app.listen(port, () => {
     console.log(`Server V2 starts on port ${port}`);
