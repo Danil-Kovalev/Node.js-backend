@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 import session from 'express-session';
 import FileStore from 'session-file-store';
 import {getData, addData, updateData, deleteData} from './functionCRUD'
-import { loginUser, registerUser } from './checkUsers';
+import { getUser, loginUser, registerUser } from './checkUsers';
 
 const app = express();
 const dirname = path.resolve();
@@ -19,7 +19,7 @@ app.use(
         path: "./sessions"
       }),
       secret: 'keyboard cat',
-      resave: true,
+      resave: false,
       saveUninitialized: true,
       cookie: {
         path: "/",
@@ -53,7 +53,12 @@ app.route('/api/v1/items')
   })
 
 app.post('/api/v1/login', jsonParser, (req: Request, res: Response) => {
-  if (loginUser(req.body)) {
+  if (req.session.login) {
+    res.send({"ok": true})
+  }
+  else if (loginUser(req.body).ok) {
+    let loginUser = req.body;
+    req.session.login = loginUser.login;
     res.send({"ok": true})
   }
   else {
@@ -70,10 +75,11 @@ app.post('/api/v1/logout', (req: Request, res: Response) => {
 })
 
 app.post('/api/v1/register', jsonParser, (req: Request, res: Response) => {
-  if (registerUser(req.body)) {
+  let resultRegister = registerUser(req.body);
+  if (resultRegister.ok) {
     let loginUser = req.body;
     req.session.login = loginUser.login;
-    res.send({"ok": true})
+    res.send(resultRegister)
   }
   else {
     res.send({"error": "User exist"})
