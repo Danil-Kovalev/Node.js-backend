@@ -1,10 +1,12 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import * as path from 'path';
 import bodyParser from "body-parser";
+
 import session from 'express-session';
 import FileStore from 'session-file-store';
-import {getData, addData, updateData, deleteData} from './functionCRUD'
-import { getUser, loginUser, registerUser } from './checkUsers';
+
+import * as routers from './functionCRUD'
+import { loginUser, registerUser } from './checkUsers';
 
 const app = express();
 const dirname = path.resolve();
@@ -39,18 +41,10 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 app.route('/api/v1/items')
-  .get((req: Request, res: Response) => {
-    res.send(getData());
-  })
-  .post(jsonParser, (req: Request, res: Response) => {
-    res.send(addData(req.body));
-  })
-  .put(jsonParser, (req: Request, res: Response) => {
-    res.send(updateData(req.body));
-  })
-  .delete(jsonParser, (req: Request, res: Response) => {
-    res.send(deleteData(req.body));
-  })
+  .get(routers.getData)
+  .post(jsonParser, routers.addData)
+  .put(jsonParser, routers.updateData)
+  .delete(jsonParser, routers.deleteData)
 
 app.post('/api/v1/login', jsonParser, (req: Request, res: Response) => {
   if (req.session.login) {
