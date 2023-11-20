@@ -1,10 +1,10 @@
-import dataUsers from '../users.json';
+import dataUsers from '../data.json';
 import * as fs from 'fs';
 
-export function getUser(login: string) {
-    dataUsers.users.map((element: any) => {
-        element.login === login
-    })
+export function getUser(login: any): number {
+    let itemId: number = -1;
+    itemId = dataUsers.users.findIndex(element => element.login === login)
+    return itemId;
 }
 
 export function loginUser(dataUser: any) {
@@ -13,14 +13,11 @@ export function loginUser(dataUser: any) {
 }
 
 export function registerUser(dataUser: any) {
-    let result = {
-        "ok": false
+    if(getUser(dataUser.login)) {
+        let data = {"login": dataUser.login, "pass": dataUser.pass, "items": [{"id": 1, "text": "test", "checked": true}]}
+        dataUsers.users.push(data);
+        fs.writeFileSync('data.json', JSON.stringify(dataUsers));
+        return {"ok": true};
     }
-    if(!dataUsers.users.find((element: any) => element.login.toString() === dataUser.login.toString())) {
-        dataUsers.users.push(dataUser);
-        fs.writeFileSync('users.json', JSON.stringify(dataUsers));
-        result.ok = true;
-        return result;
-    }
-    return result;
+    return {"ok": false};
 }
