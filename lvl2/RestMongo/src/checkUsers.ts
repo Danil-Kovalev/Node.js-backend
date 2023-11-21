@@ -1,4 +1,5 @@
 import dataUsers from '../data.json';
+import { Request, Response } from 'express';
 import * as fs from 'fs';
 
 export function getUser(login: any): number {
@@ -7,17 +8,36 @@ export function getUser(login: any): number {
     return itemId;
 }
 
-export function loginUser(dataUser: any) {
-    if (dataUsers.users.find((element: any) => element.login === dataUser.login && element.pass === dataUser.pass)) return {"ok": true}
-    else return {"ok": false}
+export function loginUser(req: Request, res: Response) {
+    if (req.session.login) {
+        res.send({"ok": true})
+    }
+    else if (dataUsers.users.find((element: any) => element.login === req.body.login && element.pass === req.body.pass)) {
+        req.session.login = req.body.login;
+        res.send({"ok": true});
+    }
+    else {
+        res.send({"error": "not found"})
+    }
 }
 
-export function registerUser(dataUser: any) {
-    if(getUser(dataUser.login)) {
-        let data = {"login": dataUser.login, "pass": dataUser.pass, "items": [{"id": 1, "text": "test", "checked": true}]}
+export function logoutUser(req: Request, res: Response) {
+    req.session.destroy((err) => {
+        if (err) throw Error;
+        res.clearCookie('connect.sid');
+        res.send({"ok": true});
+    })
+}
+
+export function registerUser(req: Request, res: Response) {
+    if(getUser(req.body.login) === -1) {
+        req.session.login = req.body.login;
+        let data = {"login": req.body.login, "pass": req.body.pass, "items": []}
         dataUsers.users.push(data);
         fs.writeFileSync('data.json', JSON.stringify(dataUsers));
-        return {"ok": true};
+        res.send({"ok": true});
     }
-    return {"ok": false};
+    else {
+        res.send({"ok": false});
+    }
 }
