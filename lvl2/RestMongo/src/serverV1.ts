@@ -5,8 +5,8 @@ import bodyParser from "body-parser";
 import session from 'express-session';
 import FileStore from 'session-file-store';
 
-import * as routers from './functionCRUD'
-import { loginUser, registerUser } from './checkUsers';
+import * as routers from './functionCRUD';
+import * as auth from './checkUsers';
 
 const app = express();
 const dirname = path.resolve();
@@ -46,39 +46,9 @@ app.route('/api/v1/items')
   .put(jsonParser, routers.updateData)
   .delete(jsonParser, routers.deleteData)
 
-app.post('/api/v1/login', jsonParser, (req: Request, res: Response) => {
-  if (req.session.login) {
-    res.send({"ok": true})
-  }
-  else if (loginUser(req.body).ok) {
-    let loginUser = req.body;
-    req.session.login = loginUser.login;
-    res.send({"ok": true})
-  }
-  else {
-    res.send({"error": "User not exist"})
-  }
-})
-
-app.post('/api/v1/logout', (req: Request, res: Response) => {
-  req.session.destroy((err) => {
-    if (err) throw Error;
-    res.clearCookie('connect.sid');
-    res.send({"ok": true});
-  })
-})
-
-app.post('/api/v1/register', jsonParser, (req: Request, res: Response) => {
-  let resultRegister = registerUser(req.body);
-  if (resultRegister.ok) {
-    let loginUser = req.body;
-    req.session.login = loginUser.login;
-    res.send(resultRegister)
-  }
-  else {
-    res.send({"error": "User exist"})
-  }
-})
+app.post('/api/v1/login', jsonParser, auth.loginUser)
+app.post('/api/v1/logout', auth.logoutUser)
+app.post('/api/v1/register', jsonParser, auth.registerUser)
 
 app.listen(port, () => {
   console.log(`Server V1 starts on port ${port}`);
