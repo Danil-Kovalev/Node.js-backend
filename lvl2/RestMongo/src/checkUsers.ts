@@ -1,5 +1,6 @@
 import dataUsers from '../data.json';
 import { Request, Response } from 'express';
+import { collectionDb } from './mongoDatabase';
 import * as fs from 'fs';
 
 export function getUser(login: any): number {
@@ -29,12 +30,13 @@ export function logoutUser(req: Request, res: Response) {
     })
 }
 
-export function registerUser(req: Request, res: Response) {
+export async function registerUser(req: Request, res: Response) {
     if(getUser(req.body.login) === -1) {
         req.session.login = req.body.login;
-        let data = {"login": req.body.login, "pass": req.body.pass, "items": []}
-        dataUsers.users.push(data);
-        fs.writeFileSync('data.json', JSON.stringify(dataUsers));
+        let newUser = {"login": req.body.login, "pass": req.body.pass, "items": []}
+        dataUsers.users.push(newUser);
+        await fs.writeFileSync('data.json', JSON.stringify(dataUsers));
+        await collectionDb.insertOne(newUser);
         res.send({"ok": true});
     }
     else {
