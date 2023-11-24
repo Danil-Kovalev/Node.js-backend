@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 
 import session from 'express-session';
 import FileStore from 'session-file-store';
+import cors from 'cors';
 
 import * as routers from './functionCRUD';
 import * as auth from './checkUsers';
@@ -14,6 +15,11 @@ const port: number = 3005;
 const FileStoreSession = FileStore(session);
 const jsonParser = bodyParser.json();
 
+app.use(cors({
+  origin: 'http://localhost:8080',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}))
 app.use(express.static(path.resolve(dirname, 'front')));
 app.use(
     session({
@@ -36,7 +42,7 @@ declare module "express-session" {
   }
 }
 
-app.get('/', (req: Request, res: Response) => {
+app.get('/', cors(), (req: Request, res: Response) => {
     res.sendFile(path.resolve(dirname, 'front', 'index.html'));
 });
 
