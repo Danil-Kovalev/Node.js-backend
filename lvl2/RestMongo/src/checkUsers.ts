@@ -36,7 +36,7 @@ export async function registerUser(req: Request, res: Response) {
         let newUser = {"login": req.body.login, "pass": req.body.pass, "items": []}
         dataUsers.users.push(newUser);
         await fs.writeFileSync('data.json', JSON.stringify(dataUsers));
-        await collectionDb.insertOne(newUser);
+        await collectionDb.insertOne({login: req.body.login, pass: req.body.pass, items: []});
         res.send({"ok": true});
     }
     else {
