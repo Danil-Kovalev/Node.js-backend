@@ -1,19 +1,15 @@
-import {getData, addData, updateData, deleteData} from './functionCRUD'
+import * as routers from './functionCRUD'
+import * as auth from './checkUsers';
 
-export function getAction(action: any, dataUser?: string) {
-    if (action === "getItem") {
-        return getData();
-    }
-    else if (action === "deleteItem") {
-        return deleteData(dataUser);
-    }
-    else if (action === "addItem") {
-        return addData(dataUser);
-    }
-    else if (action === "editItem") {
-        return updateData(dataUser);
-    }
-    else {
-        return {"error": "uncorrected request"}
+export function getAction(action: any) {
+    switch(action) {
+        case "getItems": return routers.getData;
+        case "deleteItem": return routers.deleteData;
+        case "createItem": return routers.addData;
+        case "editItem": return routers.updateData;
+        case "login": return auth.loginUser;
+        case "logout": return auth.logoutUser;
+        case "register": return auth.registerUser;
+        default: return {"error": "uncorrected request"};
     }
 }
