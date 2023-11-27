@@ -24,7 +24,10 @@ export function loginUser(req: Request, res: Response) {
 
 export function logoutUser(req: Request, res: Response) {
     req.session.destroy((err) => {
-        if (err) throw Error;
+        if (err) {
+            res.sendStatus(500).send({"error": "Session not find"})
+            throw Error;
+        }
         res.clearCookie('connect.sid');
         res.send({"ok": true});
     })
@@ -40,6 +43,6 @@ export async function registerUser(req: Request, res: Response) {
         res.send({"ok": true});
     }
     else {
-        res.send({"ok": false});
+        res.sendStatus(404).send({"error": "User is exist"});
     }
 }
