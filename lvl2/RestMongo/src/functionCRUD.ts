@@ -7,10 +7,10 @@ import { getUser } from './checkUsers';
 export function getData(req: Request, res: Response) {
     let userItemId = getUser(req.session.login);
     if (userItemId !== -1) {
-        res.send(JSON.stringify(data.users[userItemId]));
+        res.sendStatus(200).send(JSON.stringify(data.users[userItemId]));
     }
     else {
-        res.send({"error": "forbidden"})
+        res.sendStatus(404).send({"error": "forbidden"})
     }
 }
 
@@ -24,7 +24,7 @@ export async function addData(req: Request, res: Response) {
     data.users[userItemId].items.push(newItem);
     await fs.writeFileSync('data.json', JSON.stringify(data));
     await collectionDb.updateOne({login: req.session.login}, {$push: {items: newItem}});
-    res.send(JSON.stringify({"id": data.users[userItemId].items.length}));
+    res.sendStatus(200).send(JSON.stringify({"id": data.users[userItemId].items.length}));
 }
 
 export function updateData(req: Request, res: Response) {
@@ -40,7 +40,8 @@ export function updateData(req: Request, res: Response) {
             result.ok = true;
         }
     });
-    res.send(JSON.stringify(result));
+    if (!result.ok) res.sendStatus(404).send({"error": "Data unknown"})
+    else res.sendStatus(200).send(JSON.stringify(result));
 }
 
 export async function deleteData(req: Request, res: Response) {
@@ -55,5 +56,6 @@ export async function deleteData(req: Request, res: Response) {
         }
     })
     await collectionDb.updateOne({login: req.session.login, "items.id": dataUser.id}, {$pull: {items: {id: dataUser.id}}});
-    res.send(JSON.stringify(result));
+    if (!result.ok) res.sendStatus(404).send({"error": "Data unknown"})
+    else res.sendStatus(200).send(JSON.stringify(result));
 }
