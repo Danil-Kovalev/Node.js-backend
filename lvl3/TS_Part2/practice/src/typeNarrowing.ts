@@ -25,6 +25,9 @@ function summ(a: BigObject) {
             else if (elem.cvalue as BigObject !== undefined) {
                 return summ(elem.cvalue as BigObject);   
             }
+            else {
+                return 2022;
+            }
         }
         else return 2022;
     });
