@@ -15,21 +15,10 @@ interface BigObject {
 function summ(a: BigObject) {
     const x = Object.keys(a).map((k) => {
         const elem = a[k];
-        if (elem) {
-            if (typeof elem.cvalue === "number") {
-                return elem.cvalue;   
-            }
-            else if (typeof elem.cvalue === "string") {
-                return +elem.cvalue || 2022;
-            }
-            else if (elem.cvalue !== undefined) {
-                return summ(elem.cvalue);   
-            }
-            else {
-                return 2022;
-            }
-        }
-        else return 2022;
+        let value = elem ? (typeof elem.cvalue === "number" ? elem.cvalue :
+            typeof elem.cvalue === "string" ? +elem.cvalue || 2022 :
+            elem.cvalue !== undefined ? summ(elem.cvalue) : 2022) : 2022
+        return value;
     });
     let sum = 0;
     for (let i = 0; i < x.length; i++) {
