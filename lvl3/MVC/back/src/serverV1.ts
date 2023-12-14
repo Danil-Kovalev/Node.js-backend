@@ -9,11 +9,13 @@ const dirname: string = path.resolve();
 const PORT: number = 3000;
 const jsonParser = bodyParser.json();
 
-// app.set('view engine', 'ejs');
-
 app.use(express.static(path.join(dirname, '/front')));
 
+app.set('view engine', 'ejs');
+app.set('views', path.join(dirname, '/views'))
+
 app.get('/', jsonParser, (req: Request, res: Response) => {
+    
     res.sendFile(path.join(dirname, '/front/books-page.html'))
 });
 
