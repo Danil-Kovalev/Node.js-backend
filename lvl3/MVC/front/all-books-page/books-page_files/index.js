@@ -1,12 +1,14 @@
-var drawItemsOnScroll,
-    isScrollRunning = false;
-console.log(isScrollRunning);
+import { global } from "./common.js";
+import { doAjaxQuery } from "./common.js";
+
+var drawItemsOnScroll, isScrollRunning = false;
+// console.log(isScrollRunning);
 
 $(document).ready(function () {
 
     (function () {
 
-        data = {
+        var data = {
             filter: getParameterByName('filter') || "new",
             offset: getParameterByName('offset'),
             limit: getParameterByName('count') || global.items_limit_on_page_load
@@ -31,7 +33,7 @@ $(document).ready(function () {
     $(document).scroll(function () {
         if ((( $(document).height() - $(window).scrollTop() ) < ( 2 * $(window).height() )) && !isScrollRunning) {
             isScrollRunning = true;
-            drawItemsOnScroll();
+            // drawItemsOnScroll();
         }
     });
 });

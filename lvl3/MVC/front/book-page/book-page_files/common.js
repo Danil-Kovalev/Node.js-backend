@@ -1,5 +1,5 @@
 /* ----------------------------- begin view ----------------------------------*/
-var view = {
+export var view = {
     fillFields: function(obj, fields, func) {
         fields = fields.split(/, */);
         fields.map(function(f) {
@@ -103,11 +103,10 @@ var view = {
         $('#main').after('<div id="test-modal" class="mfp-hide white-popup-block"><h1>' + title + '</h1><p>' + text + '</p><p><a class="popup-modal-dismiss" href="#">X</a></p></div>');
     },
     showError: function(text) {
-        swal('Ооопс!', text, 'error');
+        Swal.fire('Ооопс!', text, 'error');
     },
     showSuccess: function(text) {
-        // console.log(text);
-        swal('Отлично!', text, 'success');
+        Swal.fire('Отлично!', text, 'success');
     },
     showSubscribe: function(text, bookId) {
         swal({
@@ -194,7 +193,7 @@ var view = {
 /* ------------------------------- end view ----------------------------------*/
 
 /* --------------------------- begin controller ------------------------------*/
-var controller = {
+export var controller = {
     validateEmail: function(value) {
         var regex = /^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,10}$/;
         return regex.test(value);
@@ -205,7 +204,7 @@ var controller = {
 
 /* ------------------------ Jquery Ajax function ---------------------------- */
 
-function doAjaxQuery(method, url, data, callback) {
+export function doAjaxQuery(method, url, data, callback) {
     $.ajax({
         type: method,
         url: url,
@@ -239,7 +238,7 @@ $(function() {
 });
 
 var global = {
-    items_limit_on_page_load: 24,
+    items_limit_on_page_load: 20,
     number_of_items_onscroll: 6,
     filter: 'new'
 };

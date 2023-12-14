@@ -103,11 +103,11 @@ var view = {
         $('#main').after('<div id="test-modal" class="mfp-hide white-popup-block"><h1>' + title + '</h1><p>' + text + '</p><p><a class="popup-modal-dismiss" href="#">X</a></p></div>');
     },
     showError: function(text) {
-        swal('Ооопс!', text, 'error');
+        Swal.fire('Ооопс!', text, 'error');
     },
     showSuccess: function(text) {
         // console.log(text);
-        swal('Отлично!', text, 'success');
+        Swal.fire('Отлично!', text, 'success');
     },
     showSubscribe: function(text, bookId) {
         swal({
@@ -205,7 +205,7 @@ var controller = {
 
 /* ------------------------ Jquery Ajax function ---------------------------- */
 
-function doAjaxQuery(method, url, data, callback) {
+export function doAjaxQuery(method, url, data, callback) {
     $.ajax({
         type: method,
         url: url,
@@ -238,8 +238,8 @@ $(function() {
     });
 });
 
-var global = {
-    items_limit_on_page_load: 24,
+export var global = {
+    items_limit_on_page_load: 20,
     number_of_items_onscroll: 6,
     filter: 'new'
 };

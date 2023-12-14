@@ -12,14 +12,10 @@
     <link rel="stylesheet" href="./books-page_files/style.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" crossorigin="anonymous"/>
 
     <link rel="shortcut icon" href="http://localhost:3000/favicon.ico">
-    <style>
-    	.details {
-			display: none;
-    	}
-    </style>
 </head>
 
 <body data-gr-c-s-loaded="true" class="">
@@ -216,7 +212,7 @@
                         </a>
                     </div>
                 </div>
-<!--                 <div data-book-id="37" class="book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
+                <div data-book-id="37" class="book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
                     <div class="book">
                         <a href="http://localhost:3000/book/37"><img src="./books-page_files/images/37.jpg" alt="Exploring Arduino: Tools and Techniques for Engineering Wizardry">
                             <div data-title="Exploring Arduino: Tools and Techniques for Engineering Wizardry" class="blockI" style="height: 46px;">
@@ -294,7 +290,7 @@
                         </a>
                     </div>
                 </div>
-                <div data-book-id="43" class="book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
+                <!-- <div data-book-id="43" class="book_item col-xs-6 col-sm-3 col-md-2 col-lg-2">
                     <div class="book">
                         <a href="http://localhost:3000/book/43"><img src="./books-page_files/images/43.jpg" alt="Android для разработчиков">
                             <div data-title="Android для разработчиков" class="blockI" style="height: 46px;">
@@ -371,13 +367,16 @@
                             <button type="button" class="details btn btn-success">Читать</button>
                         </a>
                     </div>
-                </div>
- -->            </div>
+                </div> -->
+            </div>
         </div>
-
-<center>оопс... в этом хтмл не реализованы кнопки "вперед" и "назад", а книг на странице должно быть не больше 20</center>
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script type="module" src="./books-page_files/index.js"></script>
     </section>
+    <center>
+        <button type="button" class="btn-success">Назад</button>
+        <button type="button" class="btn-success">Вперед</button>
+    </center>
     <section id="footer" class="footer-wrapper">
         <div class="navbar-bottom row-fluid">
             <div class="navbar-inner">
