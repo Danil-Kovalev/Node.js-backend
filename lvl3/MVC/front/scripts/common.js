@@ -213,10 +213,10 @@ export function doAjaxQuery(method, url, data, callback) {
         dataType: 'json',
         data: ((method == 'POST') ? JSON.stringify(data) : data),
         success: function(res) {
-            if (!res.success) {
-                view.showError(res.msg);
-                return;
-            }
+            // if (!res.success) {
+            //     view.showError(res.msg);
+            //     return;
+            // }
             callback(res);
         },
         error: function(jqXHR, textStatus) {
@@ -239,7 +239,7 @@ $(function() {
 });
 
 export var global = {
-    items_limit_on_page_load: 24,
+    items_limit_on_page_load: 20,
     number_of_items_onscroll: 6,
     filter: 'new'
 };
