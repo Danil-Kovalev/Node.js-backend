@@ -8,10 +8,10 @@ var isBookInUse = false;
 var bookId;
 
 doAjaxQuery('GET', '/api/v1/book/' + pathname.substr(bookIdPosition), null, function(res) {
-    view.fillBookInfo(res.data);
-    if (res.data.event) {
+    view.fillBookInfo(res);
+    if (res.event) {
         isBookInUse = true;
-        bookId = res.data.id;
+        bookId = res.id;
     }
 });
 
