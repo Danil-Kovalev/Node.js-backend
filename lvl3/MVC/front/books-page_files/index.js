@@ -3,8 +3,9 @@ import { view } from '../scripts/common.js';
 import { global } from '../scripts/common.js';
 import { setSidebarActiveButton } from './sidebar.js';
 
-var drawItemsOnScroll
+var drawItems
 export var isScrollRunning = false;
+let numberOfBooks = 0;
 // console.log(isScrollRunning);
 
 $(document).ready(function () {
@@ -20,12 +21,13 @@ $(document).ready(function () {
         setSidebarActiveButton(null, data.filter);
         doAjaxQuery('GET', '/api/v1/books', data, function (res) {
             view.addBooksItems(res.data.books, true);
-            drawItemsOnScroll = initDrawItemsOnScroll(res.data.total.amount);
+            drawItems = initDrawItems(res.data.total.amount);
             if (localStorage.getItem('h')) {
                 $(window).scrollTop(localStorage.getItem('h'));
                 localStorage.removeItem('h');
             }
-            checkCountBooks(res.data.books.length, res.data.total.amount)
+            numberOfBooks += res.data.books.length;
+            checkCountBooks(numberOfBooks, res.data.total.amount)
         });
     }());
 
@@ -34,23 +36,12 @@ $(document).ready(function () {
     });
 
     $('#nextBtn').on('click', function () {
-        drawItemsOnScroll();
-        hideElement($(this))
-        showElement($('#prevBtn'))
+        drawItems();
     })
 
     $('#prevBtn').on('click', function () {
-        drawItemsOnScroll();
-        hideElement($(this))
-        showElement($('#nextBtn'))
+        backDrawItems()
     })
-
-    // $(document).scroll(function () {
-    //     if ((( $(document).height() - $(window).scrollTop() ) < ( 2 * $(window).height() )) && !isScrollRunning) {
-    //         isScrollRunning = true;
-    //         drawItemsOnScroll();
-    //     }
-    // });
 });
 
 export function getParameterByName(name, url) {
@@ -63,13 +54,13 @@ export function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
-var initDrawItemsOnScroll = function (maxItems) {
+var initDrawItems = function (maxItems) {
     var maxNumOfItems = maxItems,
         limit = global.number_of_items_onscroll,
         offset = parseInt(getParameterByName('count')) || global.items_limit_on_page_load;
 
     return function () {
-        // offset = parseInt(getParameterByName('count')) || global.items_limit_on_page_load;
+        offset = parseInt(getParameterByName('count')) || global.items_limit_on_page_load;
         if (offset < maxNumOfItems) {
             var data = {
                 'filter': getParameterByName('filter') || "new",
@@ -81,9 +72,12 @@ var initDrawItemsOnScroll = function (maxItems) {
                 function (res) {
                     $("#loading").slideUp();
                     isScrollRunning = false;
-                    view.addBooksItems(res.data.books, false);
+                    view.addBooksItems(res.data.books, true);
                     changeHistoryStateWithParams("replace", res.data.filter, res.data.offset);
-                });
+                    numberOfBooks += res.data.books.length;
+                    checkCountBooks(numberOfBooks, res.data.total.amount)
+                }
+            );
             offset += limit;
         }
     }
@@ -106,19 +100,57 @@ function changeHistoryStateWithParams(action, filter, offset) {
     var count = offset ? global.number_of_items_onscroll : global.items_limit_on_page_load;
     var queryString = '?filter=' + filter + '&count=' + (offset + count);
     if (action === 'push') {
-        window.history.pushState('','',queryString);
+        window.history.pushState('', '', queryString);
     } else {
-        window.history.replaceState('','',queryString);
+        window.history.replaceState('', '', queryString);
     }
 }
 
+function backDrawItems() {
+    let limit = global.number_of_items_onscroll,
+        offset = parseInt(getParameterByName('count'));
+
+    if (offset - global.items_limit_on_page_load < 20) {
+        offset = 0;
+        limit = global.items_limit_on_page_load
+    }
+    else {
+        offset = offset - global.items_limit_on_page_load
+    }
+
+    var data = {
+        'filter': getParameterByName('filter') || "new",
+        'offset': offset,
+        'limit': limit
+    };
+    doAjaxQuery('GET', '/api/v1/books', data,
+        function (res) {
+            $("#loading").slideUp();
+            isScrollRunning = false;
+            view.addBooksItems(res.data.books, true);
+            changeHistoryStateWithParams("replace", res.data.filter, res.data.offset);
+            numberOfBooks = numberOfBooks - (numberOfBooks - res.data.books.length);
+            checkCountBooks(numberOfBooks, res.data.total.amount)
+        }
+    );
+}
+
 function checkCountBooks(countBooks, totalBooks) {
-    if (countBooks < totalBooks) {
+    if (countBooks < totalBooks && countBooks === global.items_limit_on_page_load) {
         showElement($('#nextBtn'))
+        hideElement($('#prevBtn'))
+    }
+    else if (countBooks < totalBooks && countBooks > global.items_limit_on_page_load) {
+        showElement($('#nextBtn'))
+        showElement($('#prevBtn'))
+    }
+    else if (countBooks < global.items_limit_on_page_load && countBooks === totalBooks) {
+        hideElement($('#nextBtn'))
+        hideElement($('#prevBtn'))
     }
     else if (countBooks === totalBooks) {
-        hideElement($('#nextBtn'))
         showElement($('#prevBtn'))
+        hideElement($('#nextBtn'))
     }
 }
 
