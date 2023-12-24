@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <link rel="stylesheet" href="./admin-page_files/style.css">
+    <title>Admin page</title>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body class="p-3 m-0 border-0 bd-example m-0 border-0">
+
+    <nav class="navbar bg-body-tertiary" style="background-color: #ffffff;">
+        <div class="container-fluid">
+            <a class="navbar-brand">Бібліотека Ш++</a>
+            <form class="d-flex" role="navigation">
+                <button class="btn btn-outline-success" type="button">Вихід</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="list-books position-absolute start-0 top-10">
+        <ul class="list-group list-group-horizontal">
+            <li class="list-group-item">Назва книги</li>
+            <li class="list-group-item">Aвтори</li>
+            <li class="list-group-item">Рік</li>
+            <li class="list-group-item">Дія</li>
+            <li class="list-group-item">Кліків</li>
+        </ul>
+        <ul class="list-group list-group-horizontal-sm">
+            <li class="list-group-item">Назва1</li>
+            <li class="list-group-item">Автор1</li>
+            <li class="list-group-item">2023</li>
+            <li class="list-group-item">Видалити</li>
+            <li class="list-group-item">1</li>
+        </ul>
+        <ul class="list-group list-group-horizontal-md">
+            <li class="list-group-item">Назва2</li>
+            <li class="list-group-item">Автор2</li>
+            <li class="list-group-item">2023</li>
+            <li class="list-group-item">Видалити</li>
+            <li class="list-group-item">3</li>
+        </ul>
+        <ul class="list-group list-group-horizontal-lg">
+            <li class="list-group-item">Назва3</li>
+            <li class="list-group-item">Автор3</li>
+            <li class="list-group-item">2023</li>
+            <li class="list-group-item">Видалити</li>
+            <li class="list-group-item">2</li>
+        </ul>
+        <ul class="list-group list-group-horizontal-lg">
+            <li class="list-group-item">Назва4</li>
+            <li class="list-group-item">Автор4</li>
+            <li class="list-group-item">2023</li>
+            <li class="list-group-item">Видалити</li>
+            <li class="list-group-item">4</li>
+        </ul>
+
+        <div class="pages position-absolute top-100 bottom-0 start-50 translate-middle">
+            <nav aria-label="...">
+                <ul class="pagination pagination-sm">
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link">1</span>
+                    </li>
+                    <li class="page-item"><a class="page-link">2</a></li>
+                    <li class="page-item"><a class="page-link">3</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="field-add-books hstack gap-3 position-absolute start-50 top-10 end-0">
+        <div class="main-info-book vstack gap-3">
+            <div class="mb-3">
+                <input type="text" class="form-control" id="book-name" placeholder="Назва книги">
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="year-publicution" placeholder="Рік видання">
+            </div>
+            <div class="mb-3">
+                <input class="form-control" type="file" id="formFile">
+            </div>
+            <div class="card mb-3" style="max-width: 110px; height: 125px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="..." class="img-fluid rounded-start" alt="...">
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-outline-success w-50">Додати</button>
+        </div>
+
+        <div class="additional-info vstack gap-3">
+            <div class="mb-3">
+                <input type="text" class="form-control" id="author" placeholder="Перший автор">
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="author" placeholder="Другий автор">
+            </div>
+            <div class="mb-3">
+                <input type="text" class="form-control" id="author" placeholder="Третій автор">
+            </div>
+            <div class="mb-3">
+                <textarea class="form-control" id="description-book" rows="3" placeholder="Опис книги"></textarea>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
