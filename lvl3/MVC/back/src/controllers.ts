@@ -47,7 +47,7 @@ export function getBook(req: Request, res: Response) {
     })
 }
 
-export function myAuthorizer(username: string, password: string) {
+export function authorizer(username: string, password: string) {
     const userMatches = basicAuth.safeCompare(username, '')
     const passwordMatches = basicAuth.safeCompare(password, '')
     
