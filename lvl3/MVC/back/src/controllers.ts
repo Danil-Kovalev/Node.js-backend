@@ -1,34 +1,36 @@
-import dataBooks from '../books.json';
 import { Request, Response } from 'express';
 import { clientDB } from '../../MySQL_DB/clientDB';
-
-const DEFAULT_FILTER = 'new';
-const DEFAULT_OFFSET = 0;
+import basicAuth, { IBasicAuthedRequest } from 'express-basic-auth';
+import { DEFAULT_OFFSET } from './constants';
+import { DEFAULT_FILTER } from './constants';
 
 export function getBooks(req: Request, res: Response) {
+    let convertedOffset = convertOffset(Number(req.query.offset));
+    let convertedFilter = convertFilter(String(req.query.filter));
     let dataReady;
+    
     clientDB.query("SELECT * FROM books", (err: Error, result: Array<object>) => {
         dataReady = {
             data: {
-                books: result.slice(convertOffset(Number(req.query.offset)), Number(req.query.limit) + convertOffset(Number(req.query.offset))),
+                books: result.slice(convertedOffset, Number(req.query.limit) + convertedOffset),
                 total: {
                     amount: result.length
                 },
-                filter: convertFilter(String(req.query.filter)),
-                offset: convertOffset(Number(req.query.offset))
+                filter: convertedFilter,
+                offset: convertedOffset
             },
             success: true
         }
-        res.send(dataReady)
+        res.send(dataReady);
     })
 }
 
-function convertFilter(valueReqData: string | undefined): string {
-    return valueReqData === undefined ? DEFAULT_FILTER : String(valueReqData);
+function convertOffset(valueReqData: number): number {
+    return valueReqData === undefined ? DEFAULT_OFFSET : Number(valueReqData);
 }
 
-function convertOffset(valueReqData: number | undefined): number {
-    return valueReqData === undefined ? DEFAULT_OFFSET : Number(valueReqData);
+function convertFilter(valueReqData: string): string {
+    return valueReqData === undefined ? DEFAULT_FILTER : String(valueReqData);
 }
 
 export function getBook(req: Request, res: Response) {
@@ -43,4 +45,15 @@ export function getBook(req: Request, res: Response) {
         }
         res.send(dataReady)
     })
+}
+
+export function myAuthorizer(username: string, password: string) {
+    const userMatches = basicAuth.safeCompare(username, '')
+    const passwordMatches = basicAuth.safeCompare(password, '')
+    
+    return userMatches && passwordMatches
+}
+
+export function searchBooks(searchText: string) {
+
 }
