@@ -1,6 +1,22 @@
 import { view } from "../scripts/common.js";
 import { doAjaxQuery } from "../scripts/common.js";
 
+$(document).ready(function () {
+
+    (function () {
+
+        var data = {
+            filter: "all",
+            offset: 0,
+            limit: 4
+        };
+
+        doAjaxQuery('GET', '/admin/api/v1/books', data, function (res) {
+            view.addBooksList(res.data.books)
+        });
+    }());
+});
+
 // waiting load page and ask for an item
 window.onload = function () {
     const logout = document.getElementById("logout-btn")
