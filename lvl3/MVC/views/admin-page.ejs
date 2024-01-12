@@ -47,11 +47,8 @@
             <tbody class="table-group-divider" id="table-content"></tbody>
         </table>
 
-        <ul class="pagination position-relative top-50 start-50 translate-middle-y">
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-        </ul>
+        <%- include('./partials/adminBooks.ejs') %>
+        <ul class="pagination position-relative top-50 start-50 translate-middle-y" id="pagination-content"></ul>
     </div>
 
     <div class="field-add-books hstack gap-3 position-absolute start-50 top-10 end-0">
