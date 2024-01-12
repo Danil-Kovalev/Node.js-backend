@@ -1,5 +1,6 @@
 import { view } from "../scripts/common.js";
 import { doAjaxQuery } from "../scripts/common.js";
+import { global } from "../scripts/common.js";
 
 $(document).ready(function () {
 
@@ -8,11 +9,13 @@ $(document).ready(function () {
         var data = {
             filter: "all",
             offset: 0,
-            limit: 4
+            limit: global.items_limit_on_admin_page_load
         };
 
         doAjaxQuery('GET', '/admin/api/v1/books', data, function (res) {
-            view.addBooksList(res.data.books)
+            view.addBooksList(res.data.books);
+            let amountPages = Math.ceil(res.data.total.amount / global.items_limit_on_admin_page_load);
+            view.addPaginationElements(amountPages);
         });
     }());
 });
@@ -45,6 +48,30 @@ function logoutClick() {
         window.location.href = "/";
     } else {
         view.showError("Logout failed")
+    }
+}
+
+$('.page-link').click(function (event) {
+    event.preventDefault();
+    // setPageActive($(this));
+    let pageElem = $(this);
+    let indexPage = pageElem.innerHTML;
+    (function () {
+        let data = {
+            offset: global.items_limit_on_admin_page_load * (indexPage - 1),
+            limit: global.items_limit_on_page_load
+        };
+        doAjaxQuery('GET', '/admin/api/v1/books', data, function (res) {
+            view.addBooksList(res.data.books);
+        })
+    }())
+});
+
+function setPageActive(activeELem) {
+    $('page-link').removeClass('page-link active');
+    if (activeElem) {
+        activeElem.closest('a').addClass('page-link active');
+        return
     }
 }
 
