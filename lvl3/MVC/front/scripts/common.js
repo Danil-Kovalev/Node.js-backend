@@ -55,45 +55,46 @@ export var view = {
         return (((string == null) || (string == 0)) ? '-' : string);
     },
     addBooksListRow: function(book) {
-        var date;
-        if (book.date) {
-            date = new Date(book.date);
-            date.setDate(date.getDate() + book.term);
-            date = date.toDateString();
-        }
+        // var date;
+        // if (book.date) {
+        //     date = new Date(book.date);
+        //     date.setDate(date.getDate() + book.term);
+        //     date = date.toDateString();
+        // }
 
         return $('#pattern').html()
             .replace(/{id}/g, book.id)
             .replace(/{title}/g, book.title)
             .replace(/{author}/g, book.author)
-            .replace(/{name}/g, view.nullToDash(book.name))
-            .replace(/{email}/g, view.nullToDash(book.email))
-            .replace(/{phone}/g, view.nullToDash(book.phone))
-            .replace(/{date}/g, view.nullToDash(date))
-            .replace(/{pawn}/g, view.nullToDash(book.pawn));
+            .replace(/{year}/g, book.year)
+            .replace(/{clicks}/g, book.clicks)
+            // .replace(/{name}/g, view.nullToDash(book.name))
+            // .replace(/{email}/g, view.nullToDash(book.email))
+            // .replace(/{phone}/g, view.nullToDash(book.phone))
+            // .replace(/{date}/g, view.nullToDash(date))
+            // .replace(/{pawn}/g, view.nullToDash(book.pawn));
     },
     addBooksList: function(res) {
-        var content = $('#table_content');
+        var content = $('#table-content');
         var contentHTML = '';
         // console.log("Количество книг: " + res.data.books.length);
-        for (var i in res.data.books) {
-            contentHTML += view.addBooksListRow(res.data.books[i]);
+        for (var i in res) {
+            contentHTML += view.addBooksListRow(res[i]);
         }
 
         content.html(contentHTML);
 
-        $('.book_list_row').click(function() {
-            $(location).attr('href', 'admin/book/' + $(this).attr('data-book-id'));
-        });
+        // $('.book_list_row').click(function() {
+        //     $(location).attr('href', 'admin/book/' + $(this).attr('data-book-id'));
+        // });
     },
     fillBookInfo: function(book) {
-        // console.log(book);
         view.fillFields(book, 'title,author,year,pages,isbn,description', "html");
         $('#id').attr({
             'book-id': book.id,
             'busy': book.event
         });
-        $('#bookImg img').attr('src', '/img/books/' + book.id + '.jpg');
+        $('#bookImg img').attr('src', '../images/' + book.id + '.jpg');
         $('.description').html(book.description);
     },
     normalDateFormat: function(date) {
@@ -106,8 +107,7 @@ export var view = {
         Swal.fire('Ооопс!', text, 'error');
     },
     showSuccess: function(text) {
-        // console.log(text);
-        Swal.fire('Отлично!', text, 'success');
+        Swal.fire('Чудово!', text, 'success');
     },
     showSubscribe: function(text, bookId) {
         Swal.fire({
@@ -188,6 +188,20 @@ export var view = {
         }
         content.html(contentHTML);
         content.show('fast');
+    },
+    addPaginationElement: function(page) {
+        return $('#pattern-pagination').html()
+        .replace(/{id}/g, page)
+    },
+    addPaginationElements: function(pages) {
+        let pagination = $('#pagination-content');
+        let paginationHTML = '';
+        
+        for (let i = 1; i <= pages; i++) {
+            paginationHTML += view.addPaginationElement(i);
+        }
+
+        pagination.html(paginationHTML);
     }
 
 };
@@ -213,34 +227,35 @@ export function doAjaxQuery(method, url, data, callback) {
         dataType: 'json',
         data: ((method == 'POST') ? JSON.stringify(data) : data),
         success: function(res) {
-            // if (!res.success) {
-            //     view.showError(res.msg);
-            //     return;
-            // }
+            if (!res.success) {
+                view.showError(res.msg);
+                return;
+            }
             callback(res);
         },
         error: function(jqXHR, textStatus) {
-            view.showError('Ошибка ' + textStatus);
+            view.showError('Помилка ' + textStatus);
         }
     });
 }
 
-$(function() {
-    $('.popup-modal').magnificPopup({
-        type: 'inline',
-        preloader: false,
-        focus: '#username',
-        modal: true
-    });
-    $(document).on('click', '.popup-modal-dismiss', function(e) {
-        e.preventDefault();
-        $.magnificPopup.close();
-    });
-});
+// $(function() {
+//     $('.popup-modal').magnificPopup({
+//         type: 'inline',
+//         preloader: false,
+//         focus: '#username',
+//         modal: true
+//     });
+//     $(document).on('click', '.popup-modal-dismiss', function(e) {
+//         e.preventDefault();
+//         $.magnificPopup.close();
+//     });
+// });
 
 export var global = {
-    items_limit_on_page_load: 20,
-    number_of_items_onscroll: 6,
+    items_limit_on_admin_page_load: 4,
+    items_limit_on_page_load: 18,
+    number_of_items_onscroll: 10,
     filter: 'new'
 };
 
