@@ -2,12 +2,15 @@ import { view } from "../scripts/common.js";
 import { doAjaxQuery } from "../scripts/common.js";
 import { global } from "../scripts/common.js";
 
+/**
+ * Send request to server to get the first books and draw them in the table.
+ * After draw elements for pagination and set active first element
+ */
 $(document).ready(function () {
 
     (function () {
 
         var data = {
-            filter: "all",
             offset: 0,
             limit: global.items_limit_on_admin_page_load
         };
@@ -16,6 +19,7 @@ $(document).ready(function () {
             view.addBooksList(res.data.books);
             let amountPages = Math.ceil(res.data.total.amount / global.items_limit_on_admin_page_load);
             view.addPaginationElements(amountPages);
+            setPageActive(null, 1);
         });
     }());
 });
@@ -51,27 +55,37 @@ function logoutClick() {
     }
 }
 
-$('.page-link').click(function (event) {
+/**
+ * Hangs an event on a click on a pagination element.
+ * Sets active pressed element and forms data request to server to get books depending on the pressed element.
+ * Draw books in the table
+ */
+$(document).on('click', '.page-link', function (event) {
     event.preventDefault();
-    // setPageActive($(this));
-    let pageElem = $(this);
-    let indexPage = pageElem.innerHTML;
-    (function () {
-        let data = {
-            offset: global.items_limit_on_admin_page_load * (indexPage - 1),
-            limit: global.items_limit_on_page_load
-        };
-        doAjaxQuery('GET', '/admin/api/v1/books', data, function (res) {
-            view.addBooksList(res.data.books);
-        })
-    }())
+    let page = $(this).attr('page');
+    setPageActive($(this), page);
+    let data = {
+        offset: global.items_limit_on_admin_page_load * (page - 1),
+        limit: global.items_limit_on_admin_page_load
+    };
+    doAjaxQuery('GET', '/admin/api/v1/books', data, function (res) {
+        view.addBooksList(res.data.books);
+    })
 });
 
-function setPageActive(activeELem) {
-    $('page-link').removeClass('page-link active');
-    if (activeElem) {
-        activeElem.closest('a').addClass('page-link active');
-        return
+/**
+ * Sets active element.
+ * First deletes all existing active elements and then sets new active element: if element exist, then set active him, else set by parameter page
+ * @param {*} element pressed element
+ * @param {*} page number of the clicked element
+ */
+function setPageActive(element, page) {
+    $('.page-link').removeClass('active');
+    if (element) {
+        element.closest('a').addClass('active');
+    }
+    else {
+        $('a[page=' + page + ']').addClass('active');
     }
 }
 
