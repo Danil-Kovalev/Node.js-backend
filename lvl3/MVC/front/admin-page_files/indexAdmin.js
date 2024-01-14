@@ -55,6 +55,32 @@ function logoutClick() {
     }
 }
 
+$(document).on('click', '.delete-btn', function (event) {
+    event.preventDefault();
+    let index = $(this).attr('index-btn');
+    
+    let data = {
+        id: Number(index)
+    };
+
+    fetch('http://localhost:3000/admin/api/v1/book', {
+        method: 'DELETE',
+        body: JSON.stringify(data),
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json()).then(response => {
+        if (response.success) {
+            view.showSuccess('Книга успішно додана');
+            window.location.href = "/admin";
+        }
+        else {
+            view.showError('Книга не додана')
+        }
+    })
+});
+
 /**
  * Hangs an event on a click on a pagination element.
  * Sets active pressed element and forms data request to server to get books depending on the pressed element.
@@ -139,7 +165,8 @@ function addBook() {
 
     doAjaxQuery('POST', '/admin/api/v1/book', data, function (res) {
         if (res.success) {
-            view.showSuccess('Книга успішно додана')
+            view.showSuccess('Книга успішно додана');
+            window.location.href = "/admin";
         }
         else {
             view.showError('Книга не додана');
