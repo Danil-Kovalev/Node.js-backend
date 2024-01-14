@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import * as router from './controllers';
 import { optionsAuth } from './constants';
 import basicAuth from 'express-basic-auth'
+import * as adminRouter from './adminController';
 
 const app: Express = express();
 
@@ -31,7 +32,13 @@ app.get('/book/:bookID', (req: Request, res: Response) => {
 })
 
 app.route('/api/v1/book/:bookID').get(router.getBook);
-app.route('/api/v1/books').get(router.getBooks)
+app.route('/api/v1/books').get(router.getBooks);
+
+app.route('/admin/api/v1/books').get(adminRouter.getBooks);
+
+app.route('/admin/api/v1/book')
+.delete(adminRouter.deleteBook)
+.post(adminRouter.addBook)
 
 app.listen(PORT, () => {
     console.log(`Server V1 starts on port ${PORT}`);
