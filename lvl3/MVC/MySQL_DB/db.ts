@@ -1,4 +1,4 @@
-import mysql from 'mysql2'
-import { CONFIG } from '../back/src/constants'
+import mysql, { Connection } from "mysql2/promise";
+import { CONFIG } from '../back/src/constants.js'
 
-export const clientDB = mysql.createConnection(CONFIG);
+export const db: Connection = await mysql.createConnection(CONFIG);
