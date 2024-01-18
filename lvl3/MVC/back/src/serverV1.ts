@@ -1,10 +1,11 @@
 import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
 import bodyParser from "body-parser";
-import * as router from './controllers';
-import { optionsAuth } from './constants';
 import basicAuth from 'express-basic-auth'
-import * as adminRouter from './adminController';
+
+import * as router from './controllers.js';
+import * as adminRouter from './adminController.js';
+import { optionsAuth } from './constants.js';
 
 const app: Express = express();
 
@@ -37,8 +38,8 @@ app.route('/api/v1/books').get(router.getBooks);
 app.route('/admin/api/v1/books').get(adminRouter.getBooks);
 
 app.route('/admin/api/v1/book')
-.delete(adminRouter.deleteBook)
-.post(adminRouter.addBook)
+.delete(adminRouter.deleteBookAdmin)
+.post(adminRouter.addBookAdmin)
 
 app.listen(PORT, () => {
     console.log(`Server V1 starts on port ${PORT}`);
