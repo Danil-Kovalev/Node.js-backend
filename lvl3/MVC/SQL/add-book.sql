@@ -1,1 +1,0 @@
-INSERT INTO books (id, title, author, description, year, pages) VALUES(?, ?, ?, ?, ?, ?)
