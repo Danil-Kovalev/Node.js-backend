@@ -1,0 +1,1 @@
+SELECT b.authors FROM `booksV1` as b

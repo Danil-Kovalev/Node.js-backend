@@ -1,1 +1,1 @@
-INSERT INTO books (id, title, description, year, pages) VALUES(?, ?, ?, ?, ?)
+INSERT INTO `booksV2` (id, title, description, year, pages) VALUES(?, ?, ?, ?, ?)

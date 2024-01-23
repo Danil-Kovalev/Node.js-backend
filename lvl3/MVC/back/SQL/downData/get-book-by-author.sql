@@ -1,0 +1,1 @@
+SELECT b.id FROM `booksV1` as b WHERE b.authors LIKE ?

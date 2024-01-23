@@ -1,1 +1,1 @@
-DELETE FROM `books` WHERE id=?
+DELETE FROM `booksV2` WHERE id=?

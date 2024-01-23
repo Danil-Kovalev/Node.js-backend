@@ -1,0 +1,1 @@
+INSERT INTO `booksV1` (id, title, description, year, pages, authors) VALUES(?, ?, ?, ?, ?, ?)

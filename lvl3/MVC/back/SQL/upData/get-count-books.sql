@@ -1,1 +1,1 @@
-SELECT COUNT(*) as count FROM `books`
+SELECT COUNT(*) as count FROM `booksV2`
