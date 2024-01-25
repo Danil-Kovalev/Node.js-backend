@@ -1,11 +1,14 @@
 import express, { Express, Request, Response } from 'express';
 import * as path from 'path';
 import bodyParser from "body-parser";
-import basicAuth from 'express-basic-auth'
+import basicAuth from 'express-basic-auth';
 
 import * as router from './controllers.js';
 import * as adminRouter from './adminController.js';
 import { optionsAuth } from './constants.js';
+import { backupData } from '../cron/cron.js';
+
+await backupData();
 
 const app: Express = express();
 
