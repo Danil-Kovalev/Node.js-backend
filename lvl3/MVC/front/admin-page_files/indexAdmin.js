@@ -58,7 +58,7 @@ function logoutClick() {
 $(document).on('click', '.delete-btn', function (event) {
     event.preventDefault();
     let index = $(this).attr('index-btn');
-    
+
     let data = {
         id: Number(index)
     };
@@ -162,6 +162,29 @@ function addBook() {
         secondAuthor: secondAuthorValue,
         thirdAuthor: thirdAuthorValue
     }
+
+    var file_data = $("#form-img").prop('files')[0];
+    var form_data = new FormData();
+    form_data.append('new-img', file_data);
+
+    $.ajax({
+        type: 'POST',
+        url: '/admin/api/v1/image',
+        enctype: 'multipart/form-data',
+        data: form_data,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+            if (!res.success) {
+                view.showError(res.msg);
+                return;
+            }
+            callback(res);
+        },
+        error: function (jqXHR, textStatus) {
+            view.showError('Помилка ' + textStatus);
+        }
+    });
 
     doAjaxQuery('POST', '/admin/api/v1/book', data, function (res) {
         if (res.success) {
