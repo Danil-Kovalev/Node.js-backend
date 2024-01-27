@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { DEFAULT_OFFSET } from './constants.js';
 import { addBook, getAllBooks, deleteBook } from './scripts.js';
+import { YEAR, MONTH, DAY } from './constants.js';
 
 export async function getBooks(req: Request, res: Response) {
     let convertedOffset: number = convertOffset(Number(req.query.offset));
@@ -28,8 +29,14 @@ function convertOffset(valueReqData: number): number {
 
 export async function addBookAdmin(req: Request, res: Response) {
     let data = req.body;
+    let date: string = `${YEAR}-${MONTH}-${DAY}`;
+    let authors: Array<string> = [];
 
-    addBook(data.name, data.firstAuthor, data.description, data.year, data.pages);
+    authors.push(data.firstAuthor);
+    if (data.secondAuthor !== null) authors.push(data.secondAuthor);
+    if (data.thirdAuthor !== null) authors.push(data.thirdAuthor);
+        
+    addBook(data.name, authors, data.description, data.year, data.pages, date);
 
     res.send({
         success: true
