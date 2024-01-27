@@ -1,0 +1,1 @@
+UPDATE `booksV2` as b SET `clicks` = `clicks` + 1 WHERE b.id=?
