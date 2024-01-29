@@ -48,8 +48,6 @@ export async function deleteBookAdmin(req: Request, res: Response) {
 
     deleteBook(data.id);
 
-
-
     res.send({
         success: true
     })
