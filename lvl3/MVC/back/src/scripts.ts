@@ -2,6 +2,7 @@ import { RowDataPacket } from 'mysql2';
 import { db } from '../../MySQL_DB/db.js';
 import { readFile } from 'fs/promises';
 import { PATH_SQL } from './constants.js';
+import { deleteFile } from './handlerFiles.js';
 
 async function getSqlRequest(fileName: string, type: string): Promise<string> {
     return await readFile(PATH_SQL + '\\' + type + '\\' + fileName + '.sql', 'utf-8')
@@ -86,6 +87,8 @@ export async function deleteBook(id: number) {
 
     await db.execute<RowDataPacket[]>(query, [id]);
     await deleteBooksAuthors(id);
+
+    deleteFile(id);
 }
 
 async function deleteBooksAuthors(idBook: number) {
@@ -116,3 +119,10 @@ export async function increaseViews(idBook: number): Promise<boolean> {
     return result;
 }
 
+export async function searchItems(text: string): Promise<RowDataPacket[]> {
+    let query = await getSqlRequest('search-books', 'upData')
+
+    text = `%${text}%`;
+    let result = await db.execute<RowDataPacket[]>(query, [text]);
+    return result[0];
+}
