@@ -13,3 +13,35 @@
         </div>
     </div>
 </script>
+
+<script id="miniItem" type="text/template">
+    <div class="eAutoComplete_itemList">
+        <a class="" href="/book/{id}">
+          <img class="col-my-2" src="http://localhost:3000/images/{id}.jpg">
+          <div class="infoBook col-my-10">
+            <div class="title">{title}</div>
+            <div>{author}</div>
+          </div>
+        </a>
+      </div>
+</script>
+
+<script id="more" type="text/template">
+    <div class="eAutoComplete_itemMore">
+        <a href="{pathUrl}/search?search={text}">
+          <span>Показати більше "{text}"</span>
+        </a>
+      </div>
+</script>
+
+<script id="not_found" type="text/template">
+    <div class="eAutoComplete_itemList">
+        <a class="" href="">
+          <img class="col-my-2" src="http://localhost:3000/images/sad-smile.jpg">
+          <div class="infoBook col-my-10">
+            <div class="title">{title}</div>
+            <div>{author}</div>
+          </div>
+        </a>
+      </div>
+</script>
