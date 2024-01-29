@@ -2,18 +2,36 @@ import { Request, Response } from 'express';
 import basicAuth from 'express-basic-auth';
 import { DEFAULT_OFFSET } from './constants.js';
 import { DEFAULT_FILTER } from './constants.js';
-import { getAllBooks, getBookById, getNewBooks, getPopularBooks, increaseClick, increaseViews } from './scripts.js';
+import { getAllBooks, getBookById, getNewBooks, getPopularBooks, increaseClick, increaseViews, searchItems } from './scripts.js';
 
-export async function getBooks(req: Request, res: Response) {    
+export async function getBooks(req: Request, res: Response) {
+    if (req.query.search === undefined) {
+        let data = await requestBooks(req);
+        res.send(data);
+    }
+    else {
+        let data = await requestSearchBooks(String(req.query.search));
+        res.send(data);
+    }
+}
+
+function convertOffset(valueReqData: number): number {
+    return valueReqData === undefined ? DEFAULT_OFFSET : Number(valueReqData);
+}
+
+function convertFilter(valueReqData: string): string {
+    return valueReqData === undefined ? DEFAULT_FILTER : String(valueReqData);
+}
+
+async function requestBooks(req: Request): Promise<object> {
     let convertedOffset: number = convertOffset(Number(req.query.offset));
     let convertedFilter: string = convertFilter(String(req.query.filter));
-    let dataReady;
     let result;
+    let dataReady;
     if (convertedFilter === 'new') {
         result = await getNewBooks();
     }
-    else 
-    if (convertedFilter === 'popular') {
+    else if (convertedFilter === 'popular') {
         result = await getPopularBooks();
     }
     else {
@@ -31,16 +49,26 @@ export async function getBooks(req: Request, res: Response) {
         },
         success: true
     }
+    return dataReady;
+}
+
+async function requestSearchBooks(text: string): Promise<object> {
+    let result;
+    let dataReady;
+
+    result = await searchItems(text);
+
+    dataReady = {
+        data: {
+            books: result,
+            total: {
+                amount: result.length
+            }
+        },
+        success: true
+    }
     
-    res.send(dataReady);
-}
-
-function convertOffset(valueReqData: number): number {
-    return valueReqData === undefined ? DEFAULT_OFFSET : Number(valueReqData);
-}
-
-function convertFilter(valueReqData: string): string {
-    return valueReqData === undefined ? DEFAULT_FILTER : String(valueReqData);
+    return dataReady;
 }
 
 export async function getBook(req: Request, res: Response) {
@@ -50,7 +78,7 @@ export async function getBook(req: Request, res: Response) {
     let result = await getBookById(indexBook);
 
     await increaseViews(indexBook);
- 
+
     dataReady = {
         data: {
             book: result[0],
@@ -64,7 +92,7 @@ export async function addClick(req: Request, res: Response) {
     let idBook = Number(Object.values(req.params));
     let result = await increaseClick(idBook);
 
-    res.send({"success": result});
+    res.send({ "success": result });
 }
 
 export function authorizer(username: string, password: string) {
@@ -72,8 +100,4 @@ export function authorizer(username: string, password: string) {
     const passwordMatches = basicAuth.safeCompare(password, '1234')
 
     return userMatches && passwordMatches
-}
-
-export function searchBooks(searchText: string) {
-
 }
