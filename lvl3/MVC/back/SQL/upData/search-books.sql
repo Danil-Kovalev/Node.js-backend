@@ -1,0 +1,6 @@
+SELECT b.*, GROUP_CONCAT(a.name) AS author
+FROM `booksV2` as b
+JOIN `books-authors` as ba ON b.id=ba.idBook
+JOIN `authors` as a ON a.id=ba.idAuthor
+WHERE b.title LIKE ?
+GROUP BY b.id
