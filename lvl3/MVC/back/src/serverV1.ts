@@ -8,11 +8,11 @@ import * as router from './controllers.js';
 import * as adminRouter from './adminController.js';
 import { optionsAuth } from './constants.js';
 import { backupData } from '../cron/cron.js';
+import { PATH_FOLDER, getIdLastFile } from './handlerFiles.js';
 
 const app: Express = express();
 
 const dirname: string = path.resolve();
-
 
 const PORT: number = 3000;
 const jsonParser = bodyParser.json();
@@ -21,10 +21,11 @@ await backupData();
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, path.resolve('./front/images'))
+      cb(null, PATH_FOLDER)
     },
     filename: function (req, file, cb) {
-      cb(null, file.originalname)
+      let id: number = getIdLastFile() + 1;
+      cb(null, `${id}.jpg`)
     }
   })
   
@@ -48,6 +49,10 @@ app.get('/book/:bookID', (req: Request, res: Response) => {
     res.render(path.join(dirname, '/views/book-page.ejs'))
 })
 
+app.get('/search', (req: Request, res: Response) => {
+  res.render(path.join(dirname, '/views/search-page.ejs'))
+});
+
 app.route('/api/v1/book/:bookID').get(router.getBook);
 app.route('/api/v1/book/click/:bookID').get(router.addClick);
 app.route('/api/v1/books').get(router.getBooks);
@@ -61,6 +66,7 @@ app.route('/admin/api/v1/book')
 app.post('/admin/api/v1/image', upload.single('new-img'), (req: Request, res: Response) => {
     res.send({"success": true})
 })
+
 
 app.listen(PORT, () => {
     console.log(`Server V1 starts on port ${PORT}`);
