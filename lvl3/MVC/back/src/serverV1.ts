@@ -7,8 +7,9 @@ import multer from 'multer';
 import * as router from './controllers.js';
 import * as adminRouter from './adminController.js';
 import { optionsAuth } from './constants.js';
-import { backupData } from '../cron/cron.js';
-import { PATH_FOLDER, getIdLastFile } from './handlerFiles.js';
+import { backupData, deleteMarkBook } from '../cron/cron.js';
+import { PATH_FOLDER } from './handlerFiles.js';
+import { getNewID } from './scripts.js';
 
 const app: Express = express();
 
@@ -19,12 +20,14 @@ const jsonParser = bodyParser.json();
 
 await backupData();
 
+await deleteMarkBook();
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, PATH_FOLDER)
     },
-    filename: function (req, file, cb) {
-      let id: number = getIdLastFile() + 1;
+    filename: async function (req, file, cb) {
+      let id: number = await getNewID();
       cb(null, `${id}.jpg`)
     }
   })
