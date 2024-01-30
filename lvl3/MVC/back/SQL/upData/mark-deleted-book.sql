@@ -1,0 +1,1 @@
+UPDATE `booksV2` as b SET `deleted` = `deleted` + 1 WHERE b.id=?

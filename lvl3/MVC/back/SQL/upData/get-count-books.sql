@@ -1,1 +1,1 @@
-SELECT COUNT(*) as count FROM `booksV2`
+SELECT COUNT(*) as count FROM `booksV2` as b WHERE b.deleted=0
