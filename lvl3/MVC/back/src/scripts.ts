@@ -41,8 +41,7 @@ export async function addBook(name: string, author: Array<string>, description: 
 
     let countBooks = await getCountBooks();
 
-    let idBook = countBooks[0].count;
-    idBook++;
+    let idBook = await getNewID();
 
     await db.execute<RowDataPacket[]>(queryAddBook, [idBook, name, description, year, pages, date]);
 
@@ -54,6 +53,13 @@ export async function addBook(name: string, author: Array<string>, description: 
         addAuthors(idAuthor, el);
         addBooksAuthors(idBook, idAuthor);
     })
+}
+
+export async function getNewID(): Promise<number> {
+    let countBooks = await getCountBooks();
+    let idBook = countBooks[0].count;
+    idBook++;
+    return idBook;
 }
 
 async function getCountBooks(): Promise<RowDataPacket[]> {
@@ -80,6 +86,19 @@ async function addBooksAuthors(idBook: number, idAuthor: number) {
     let query = await getSqlRequest('add-books-authors', 'upData')
 
     await db.execute<RowDataPacket[]>(query, [idBook, idAuthor]);
+}
+
+export async function getMarkedBook() {
+    let query = await getSqlRequest('get-marked-book', 'upData')
+
+    let result = await db.execute<RowDataPacket[]>(query);
+    return result[0];
+}
+
+export async function markDeletedBook(id: number) {
+    let query = await getSqlRequest('mark-deleted-book', 'upData')
+
+    await db.execute<RowDataPacket[]>(query, [id]);
 }
 
 export async function deleteBook(id: number) {
