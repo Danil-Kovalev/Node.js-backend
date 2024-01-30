@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { DEFAULT_OFFSET } from './constants.js';
-import { addBook, getAllBooks, deleteBook } from './scripts.js';
+import { addBook, getAllBooks, markDeletedBook } from './scripts.js';
 import { YEAR, MONTH, DAY } from './constants.js';
 
 export async function getBooks(req: Request, res: Response) {
@@ -46,7 +46,7 @@ export async function addBookAdmin(req: Request, res: Response) {
 export async function deleteBookAdmin(req: Request, res: Response) {
     let data = req.body;
 
-    deleteBook(data.id);
+    markDeletedBook(data.id);
 
     res.send({
         success: true
