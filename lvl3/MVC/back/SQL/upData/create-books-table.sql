@@ -7,4 +7,5 @@ CREATE TABLE `booksV2` (
   `clicks` int(11) NOT NULL,
   `views` int(11) NOT NULL,
   `date` date NOT NULL,
+  `deleted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
