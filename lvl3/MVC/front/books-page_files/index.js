@@ -3,10 +3,9 @@ import { view } from '../scripts/common.js';
 import { global } from '../scripts/common.js';
 import { setSidebarActiveButton } from './sidebar.js';
 
-var drawItems
+var drawItems;
 export var isScrollRunning = false;
 let numberOfBooks = 0;
-// console.log(isScrollRunning);
 
 $(document).ready(function () {
 
@@ -40,7 +39,7 @@ $(document).ready(function () {
     })
 
     $('#prevBtn').on('click', function () {
-        backDrawItems()
+        backDrawItems();
     })
 });
 
@@ -87,7 +86,11 @@ export function loadIndexPage(reqData) {
     doAjaxQuery('GET', '/api/v1/books', reqData, function (res) {
         view.addBooksItems(res.data.books, true);
         changeHistoryStateWithParams('push', res.data.filter, res.data.offset);
-        drawItemsOnScroll = initDrawItemsOnScroll(res.data.total.amount);
+        drawItems = initDrawItems(res.data.total.amount);
+        
+        numberOfBooks = 0;
+        numberOfBooks += res.data.books.length;
+        checkCountBooks(numberOfBooks, res.data.total.amount)
     });
 }
 
@@ -106,11 +109,14 @@ function changeHistoryStateWithParams(action, filter, offset) {
     }
 }
 
+/**
+ * For pagination button "back"
+ */
 function backDrawItems() {
     let limit = global.number_of_items_onscroll,
-        offset = parseInt(getParameterByName('count'));
+        offset = parseInt(getParameterByName('count')) || 0;
 
-    if (offset - global.items_limit_on_page_load < 20) {
+    if (offset - global.items_limit_on_page_load < 18) {
         offset = 0;
         limit = global.items_limit_on_page_load
     }
@@ -135,31 +141,42 @@ function backDrawItems() {
     );
 }
 
+/**
+ * Check parameters books and enable or disable buttons pagination
+ * @param {*} countBooks number books on page
+ * @param {*} totalBooks total books from database
+ */
 function checkCountBooks(countBooks, totalBooks) {
     if (countBooks < totalBooks && countBooks === global.items_limit_on_page_load) {
-        showElement($('#nextBtn'))
-        hideElement($('#prevBtn'))
+        enableElement($('#nextBtn'))
+        disableElement($('#prevBtn'))
     }
     else if (countBooks < totalBooks && countBooks > global.items_limit_on_page_load) {
-        showElement($('#nextBtn'))
-        showElement($('#prevBtn'))
+        enableElement($('#nextBtn'))
+        enableElement($('#prevBtn'))
     }
     else if (countBooks < global.items_limit_on_page_load && countBooks === totalBooks) {
-        hideElement($('#nextBtn'))
-        hideElement($('#prevBtn'))
+        disableElement($('#nextBtn'))
+        disableElement($('#prevBtn'))
     }
     else if (countBooks === totalBooks) {
-        showElement($('#prevBtn'))
-        hideElement($('#nextBtn'))
+        enableElement($('#prevBtn'))
+        disableElement($('#nextBtn'))
     }
 }
 
-function showElement(element) {
-    event.preventDefault();
-    $(element).css('visibility', 'visible')
+/**
+ * Enable button pagination
+ * @param {*} element the button that was pressed
+ */
+function enableElement(element) {
+    $(element).removeAttr('disabled')
 }
 
-function hideElement(element) {
-    event.preventDefault();
-    $(element).css('visibility', 'hidden')
+/**
+ * Disable button pagination
+ * @param {*} element the button that was pressed
+ */
+function disableElement(element) {
+    $(element).attr('disabled', 'disabled')
 }
