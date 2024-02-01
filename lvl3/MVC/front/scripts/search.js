@@ -1,3 +1,7 @@
+import { htmlspecialchars } from "./common.js";
+import { doAjaxQuery } from "./common.js";
+import { view } from "./common.js";
+
 var pathNameUrl = $(location).attr('pathname').split('/');
 var pathUrl = (pathNameUrl[1] == 'admin') ? '/admin' : '';
 
@@ -32,7 +36,7 @@ var msgResultSearchText = function(text, number_found) {
 
 /* ----------------------- Search result on the page ------------------------*/
 var callbackQueryItemsSearch = function(res, text) {
-    view.addBooksItems(res.data.books);
+    view.addBooksItems(res.data.books, true);
     $('.breadcrumb .active').text('поиск');
     msgResultSearchText(text, res.data.books.length);
 };
@@ -115,7 +119,7 @@ $(document).ready(function() {
             var search_text = $(location).attr('search').split('=');
             search_text = decodeURIComponent((search_text[1] == null) ? ' ' : search_text[1]);
             $('#search').val(htmlspecialchars(search_text));
-            text = search_text.replace(/(^\s+|\s+$)/g, '');
+            let text = search_text.replace(/(^\s+|\s+$)/g, '');
             var textEncode = encodeURIComponent(text); // shielding request
             if (pathNameUrl[1] == 'search') {
                 doAjaxQuery('GET', '' + pathUrl + '/api/v1/books?search=' + textEncode + '', null,
