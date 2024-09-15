@@ -49,12 +49,15 @@ function logoutClick() {
     // check status for logout
     if (http.status === 401) {
         view.showSuccess("Ви вийшли з акаунту");
-        window.location.href = "/";
+        window.location.href = "/auth";
     } else {
         view.showError("Logout failed")
     }
 }
 
+/**
+ * Send request with id book to server and delete book
+ */
 $(document).on('click', '.delete-btn', function (event) {
     event.preventDefault();
     let index = $(this).attr('index-btn');
@@ -72,11 +75,11 @@ $(document).on('click', '.delete-btn', function (event) {
         }
     }).then(res => res.json()).then(response => {
         if (response.success) {
-            view.showSuccess('Книга успішно додана');
+            view.showSuccess('Книга успішно видалена');
             window.location.href = "/admin";
         }
         else {
-            view.showError('Книга не додана')
+            view.showError('Книга не видалена')
         }
     })
 });
@@ -130,6 +133,10 @@ function addBook() {
     let secondAuthorValue = $('#second-author').val() || null;
     let thirdAuthorValue = $('#third-author').val() || null;
 
+    let fileData = $("#form-img").prop('files')[0];
+    let formData = new FormData();
+    formData.append('new-img', fileData);
+
     event.preventDefault();
 
     if (!nameValue) {
@@ -152,6 +159,10 @@ function addBook() {
         view.showError('Введіть опис книги')
         return
     }
+    else if(!fileData) {
+        view.showError('Додайте картинку')
+        return
+    }
 
     let data = {
         name: nameValue,
@@ -163,15 +174,11 @@ function addBook() {
         thirdAuthor: thirdAuthorValue
     }
 
-    var file_data = $("#form-img").prop('files')[0];
-    var form_data = new FormData();
-    form_data.append('new-img', file_data);
-
     $.ajax({
         type: 'POST',
         url: '/admin/api/v1/image',
         enctype: 'multipart/form-data',
-        data: form_data,
+        data: formData,
         processData: false,
         contentType: false,
         success: function (res) {

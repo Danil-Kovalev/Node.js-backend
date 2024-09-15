@@ -4,5 +4,8 @@ CREATE TABLE `booksV1` (
   `description` text NOT NULL,
   `year` int(11) NOT NULL,
   `pages` int(11) NOT NULL,
-  `authors` text DEFAULT NULL
+  `authors` text DEFAULT NULL,
+  `clicks` int(11) NOT NULL,
+  `views` int(11) NOT NULL,
+  `date` date NOT NULL,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

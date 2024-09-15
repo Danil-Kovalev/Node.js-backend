@@ -13,7 +13,15 @@ html, body {
   color: #2c3e50;
   color: #2c3e50; }
   html a:focus, html a:hover, body a:focus, body a:hover {
-    text-decoration: none; }
+    text-decoration: none;
+  }
+
+#prevBtn, #nextBtn {
+  color: #fff;
+  background-color: #27ae60;
+  border-color: #31b167;
+  position: static;
+}
 
 .btn-success {
   color: #fff;

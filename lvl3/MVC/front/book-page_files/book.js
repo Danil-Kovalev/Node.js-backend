@@ -7,17 +7,17 @@ var bookIdPosition = pathname.lastIndexOf('/') + 1;
 var isBookInUse = false;
 var bookId;
 
-doAjaxQuery('GET', '/api/v1/book/' + pathname.substr(bookIdPosition), null, function(res) {
-    view.fillBookInfo(res);
-    if (res.event) {
+doAjaxQuery('GET', '/api/v1/book/' + pathname.substr(bookIdPosition), null, function (res) {
+    view.fillBookInfo(res.data.book);
+    if (res.data.book.event) {
         isBookInUse = true;
-        bookId = res.id;
+        bookId = res.data.book.id;
     }
 });
 
 /* --------------------Show the result, for sending the -----------------------
 ----------------------email in the queue for the book ---------------------- */
-var showResultSendEmailToQueue = function(email, result) {
+var showResultSendEmailToQueue = function (email, result) {
     var busy = $('#bookID').attr('busy');
     $('.form-queue', '.btnBookID', (busy === null) ? '.freeBook' : '.busyBook').css('display', 'none');
     $('.response').css('display', 'block');
@@ -25,14 +25,14 @@ var showResultSendEmailToQueue = function(email, result) {
 };
 
 /*--------------- Send email. Get in Queue in for a book ---------------------*/
-var sendEmailToQueue = function(id, email) {
-    doAjaxQuery('GET', '/api/v1/books/' + id + '/order?email=' + email, null, function(res) {
+var sendEmailToQueue = function (id, email) {
+    doAjaxQuery('GET', '/api/v1/books/' + id + '/order?email=' + email, null, function (res) {
         showResultSendEmailToQueue(email, res.success);
     });
 };
 
 /* --------------- Checking validity of email when typing in input -----------*/
-$('.orderEmail').keyup(function(event) {
+$('.orderEmail').keyup(function (event) {
     var email = $(this).val();
     var isEmail = controller.validateEmail(email);
     if (email === '') {
@@ -51,30 +51,20 @@ $('.orderEmail').keyup(function(event) {
         }
     }
 });
-/*------------------ Sending email by clicking on the button ----------------*/
-$('.btnBookID').click(function(event) {
-    // var email = $('.orderEmail').val();
-    // var isEmail = controller.validateEmail(email);
-    // if (isEmail) {
-    //     view.showSuccessEmail();
-    //     var id = $('#bookID').attr('book-id');
-    //     sendEmailToQueue(id, email);
-    // } else {
-    //     view.showErrEmail();
-    // }
-    // if (isBookInUse) {
-    //     view.showSubscribe(
-    //         "Сейчас эта книга находится на руках, у одного из наших учеников." +
-    //         " Оставь свой email и мы сообщим, как только книга вновь" +
-    //         " появится в библиотеке", bookId);
-    // } else 
-    {
-        view.showSuccess("Книга свободна и ты можешь прийти за ней." +
-        " Наш адрес: г. Кропивницкий, переулок Васильевский 10, 5 этаж." +
-        " Лучше предварительно прозвонить и предупредить нас, чтоб " +
-        " не попасть в неловкую ситуацию. Тел. 099 196 24 69"+
-        " \n\n"+
-        "******************\n"+
-        "Кстати, если вы читаете этот текст, то автор сайта еще не отсылает ajax запрос на увеличение количества кликов на кнопку по этой книге")
-    }
+/*------------------ Sending clicks by clicking on the button ----------------*/
+$('.btnBookID').click(function () {
+    doAjaxQuery('GET', '/api/v1/book/click/' + pathname.substr(bookIdPosition), null, function (res) {
+        if (res.success) {
+            view.showSuccess("Книга свободна и ты можешь прийти за ней." +
+                " Наш адрес: г. Кропивницкий, переулок Васильевский 10, 5 этаж." +
+                " Лучше предварительно прозвонить и предупредить нас, чтоб " +
+                " не попасть в неловкую ситуацию. Тел. 099 196 24 69" +
+                " \n\n" +
+                "******************\n" +
+                "Кстати, если вы читаете этот текст, то автор сайта еще не отсылает ajax запрос на увеличение количества кликов на кнопку по этой книге")
+        }
+        else {
+            view.showError("Нажаль, сталась помилка...")
+        }
+    });
 });

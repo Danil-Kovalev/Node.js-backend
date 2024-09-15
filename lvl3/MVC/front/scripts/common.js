@@ -77,7 +77,6 @@ export var view = {
     addBooksList: function(res) {
         var content = $('#table-content');
         var contentHTML = '';
-        // console.log("Количество книг: " + res.data.books.length);
         for (var i in res) {
             contentHTML += view.addBooksListRow(res[i]);
         }
@@ -239,18 +238,18 @@ export function doAjaxQuery(method, url, data, callback) {
     });
 }
 
-// $(function() {
-//     $('.popup-modal').magnificPopup({
-//         type: 'inline',
-//         preloader: false,
-//         focus: '#username',
-//         modal: true
-//     });
-//     $(document).on('click', '.popup-modal-dismiss', function(e) {
-//         e.preventDefault();
-//         $.magnificPopup.close();
-//     });
-// });
+$(function() {
+    $('.popup-modal').magnificPopup({
+        type: 'inline',
+        preloader: false,
+        focus: '#username',
+        modal: true
+    });
+    $(document).on('click', '.popup-modal-dismiss', function(e) {
+        e.preventDefault();
+        $.magnificPopup.close();
+    });
+});
 
 export var global = {
     items_limit_on_admin_page_load: 4,
@@ -259,7 +258,7 @@ export var global = {
     filter: 'new'
 };
 
-function htmlspecialchars(html) {
+export function htmlspecialchars(html) {
     html = html.replace(/&/g, "&amp;");
     html = html.replace(/</g, "&lt;");
     html = html.replace(/>/g, "&gt;");

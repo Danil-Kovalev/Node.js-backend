@@ -1,3 +1,7 @@
+import { loadIndexPage } from "./index.js";
+import { getParameterByName } from './index.js';
+import { global } from "../scripts/common.js";
+
 $('.sidebar_item').click(function (event) {
     event.preventDefault();
     var filter = $(this).attr('data-filter');
@@ -10,21 +14,15 @@ $('.sidebar_item').click(function (event) {
                 limit: global.items_limit_on_page_load
             };
         loadIndexPage(data);
-        isScrollRunning = false;
     }());
 });
 
-function changeHistoryStateWithParams(action, filter, offset) {
-    if (action = ''){
+export function setSidebarActiveButton(activeElem, filterStringValue) {
+    $('.sidebar_item').removeClass('active');
+    if (activeElem) {
+        activeElem.closest('a').addClass('active');
         return;
-    }
-
-    offset = parseInt(offset);
-    var count = offset ? global.number_of_items_onscroll : global.items_limit_on_page_load;
-    var queryString = '?filter=' + filter + '&count=' + (offset + count);
-    if (action === 'push') {
-        window.history.pushState('','',queryString);
     } else {
-        window.history.replaceState('','',queryString);
+        $('a[data-filter=' + filterStringValue + ']').addClass('active');
     }
 }

@@ -1,18 +1,20 @@
 import { authorizer } from "./controllers.js";
+import path from "path";
 
-export const DEFAULT_FILTER = 'new';
-export const DEFAULT_OFFSET = 0;
+let date = new Date();
 
-export const CONFIG = {
-    host: "127.0.0.1",
-    port: 3306,
-    user: "root",
-    database: "dataBooks",
-    password: ""
-}
+export const YEAR = date.getFullYear(); //current year
+export const MONTH = date.getMonth() + 1; //current month
+export const DAY = date.getDate(); //current day
 
-export const PATH_SQL = 'C:\\courses\\lvl3\\MVC\\SQL\\';
+export const DEFAULT_FILTER = 'new'; //default filter value
+export const DEFAULT_OFFSET = 0; //default offset value
 
+export const PATH_SQL = path.resolve('../MVC/back/SQL/'); //path to sql files
+
+/**
+ * Options for basic auth
+ */
 export const optionsAuth = {
     users: { 'admin': '1234' },
     challenge: true,

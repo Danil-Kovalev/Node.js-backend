@@ -5,6 +5,9 @@ import { YEAR, MONTH, DAY } from '../src/constants.js';
 import { getMarkedBook, deleteBook } from '../src/scripts.js';
 import { RowDataPacket } from 'mysql2';
 
+/**
+ * Delete books from database by mark "deleted" and every 1 minute delete
+ */
 export async function deleteMarkBook() {
     let id = await getMarkedBook();
     
@@ -16,6 +19,9 @@ export async function deleteMarkBook() {
     });
 }
 
+/**
+ * Get all data from database for backup every day by cron
+ */
 export async function backupData() {
     cron.schedule('0 0 * * *', () => {
         mysqldump.default({
